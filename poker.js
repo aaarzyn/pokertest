@@ -5,7 +5,8 @@ const SUIT_NAMES = {"H": "Hearts", "D": "Diamonds", "C": "Clubs", "S": "Spades"}
 const SUIT_SYMBOLS = {"H": "♥", "D": "♦", "C": "♣", "S": "♠"};
 const SUIT_COLORS = {"H": "red", "D": "red", "C": "black", "S": "black"};
 const RANK_NAMES = {
-    "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9", "10": "10", "J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"
+    "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9", 
+    "10": "10", "J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"
 };
 const HAND_TYPES = [
     "High Card", "One Pair", "Two Pair", "Three of a Kind", 
@@ -102,34 +103,22 @@ function initializePlayers(count) {
     return players;
 }
 
-// Save player details from modal
-function savePlayerDetails() {
-    const player = state.players[state.selectedPlayerId];
-    if (!player) return;
-    
-    // Update player info
-    player.name = document.getElementById('playerName').value || `Player ${player.id}`;
-    player.active = document.querySelector('input[name="playerStatus"]:checked').value === 'active';
-    player.cardsVisible = document.querySelector('input[name="cardVisibility"]:checked').value === 'visible';
-    
-    // Update UI
-    renderPlayerPositions();
-    document.querySelector('.selected-player-name').textContent = player.name;
-    playerActiveToggle.checked = player.active;
-    
-    const statusLabel = document.querySelector('.status-label');
-    if (player.active) {
-        statusLabel.textContent = 'Active';
-        statusLabel.classList.remove('folded');
-        statusLabel.classList.add('active');
-    } else {
-        statusLabel.textContent = 'Folded';
-        statusLabel.classList.remove('active');
-        statusLabel.classList.add('folded');
+// Preload all card images
+function preloadCardImages() {
+    // Regular cards
+    for (let suit of SUITS) {
+        for (let rank of RANKS) {
+            const img = new Image();
+            img.src = `Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
+        }
     }
     
-    // Close modal
-    playerEditModal.style.display = 'none';
+    // Special cards
+    const backImg = new Image();
+    backImg.src = 'Suit=Other, Number=Back Blue.png';
+    
+    const jokerImg = new Image();
+    jokerImg.src = 'Suit=Other, Number=Joker.png';
 }
 
 // DOM Ready
@@ -159,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initialize();
     
     function initialize() {
+        preloadCardImages();
         renderPlayerPositions();
         renderCardDeck();
         renderCommunityCards();
@@ -254,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 position.innerHTML = `
                     <div class="player-label">${player.name}</div>
-                    <div class=" player-cards" id="player${player.id}Cards"></div>
+                    <div class="player-cards" id="player${player.id}Cards"></div>
                 `;
                 
                 position.addEventListener('click', () => openPlayerEditModal(player));
@@ -268,42 +258,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Render cards for a specific player
-    // Render cards for a specific player
-function renderPlayerCards(player) {
-    const cardsContainer = document.getElementById(`player${player.id}Cards`);
-    if (!cardsContainer) return;
-    
-    cardsContainer.innerHTML = '';
-    
-    // Determine if this player's cards should be visible
-    const isYou = player.id === 0;
-    const cardsVisible = isYou || player.cardsVisible;
-    
-    // Create two placeholders for cards
-    for (let i = 0; i < 2; i++) {
-        if (player.cards[i]) {
-            if (cardsVisible) {
-                // Show actual card if visible
-                const card = player.cards[i];
-                const cardElement = createCardElement(card, true);
-                cardElement.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    removePlayerCard(player, card);
-                });
-                cardsContainer.appendChild(cardElement);
+    function renderPlayerCards(player) {
+        const cardsContainer = document.getElementById(`player${player.id}Cards`);
+        if (!cardsContainer) return;
+        
+        cardsContainer.innerHTML = '';
+        
+        // Determine if this player's cards should be visible
+        const isYou = player.id === 0;
+        const cardsVisible = isYou || player.cardsVisible;
+        
+        // Create two placeholders for cards
+        for (let i = 0; i < 2; i++) {
+            if (player.cards[i]) {
+                if (cardsVisible) {
+                    // Show actual card if visible
+                    const card = player.cards[i];
+                    const cardElement = createCardElement(card, true);
+                    cardElement.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removePlayerCard(player, card);
+                    });
+                    cardsContainer.appendChild(cardElement);
+                } else {
+                    // Show card back if not visible
+                    const cardBack = createCardBackElement(true);
+                    cardsContainer.appendChild(cardBack);
+                }
             } else {
-                // Show card back if not visible
-                const cardBack = createCardBackElement(true);
-                cardsContainer.appendChild(cardBack);
+                const placeholder = document.createElement('div');
+                placeholder.className = 'card-placeholder small';
+                placeholder.textContent = '?';
+                cardsContainer.appendChild(placeholder);
             }
-        } else {
-            const placeholder = document.createElement('div');
-            placeholder.className = 'card-placeholder small';
-            placeholder.textContent = '?';
-            cardsContainer.appendChild(placeholder);
         }
     }
-}
+    
+    // Create a card back element
+    function createCardBackElement(small = false) {
+        const cardElement = document.createElement('div');
+        cardElement.className = `card card-back${small ? ' small' : ''}`;
+        
+        // Use the blue card back image
+        const imgElement = document.createElement('img');
+        imgElement.src = 'Suit=Other, Number=Back Blue.png';
+        imgElement.alt = 'Card Back';
+        imgElement.className = 'card-img';
+        
+        imgElement.onerror = function() {
+            // Fallback if no card back image
+            cardElement.innerHTML = '';
+            cardElement.classList.add('fallback-card-back');
+        };
+        
+        cardElement.appendChild(imgElement);
+        
+        return cardElement;
+    }
     
     // Render card deck
     function renderCardDeck() {
@@ -318,7 +329,9 @@ function renderPlayerCards(player) {
         
         // Filter available cards
         const availableCards = state.deck.filter(card => 
-            !usedCards.some(usedCard => usedCard.equals(card))
+            !usedCards.some(usedCard => 
+                usedCard && usedCard.equals(card)
+            )
         );
         
         // Filter by selected suit
@@ -355,43 +368,40 @@ function renderPlayerCards(player) {
         
         updateCalculateButton();
     }
-
-        // Create a card back element
-    function createCardBackElement(small = false) {
-        const cardElement = document.createElement('div');
-        cardElement.className = `card card-back${small ? ' small' : ''}`;
-        
-        // Use the blue card back image
-        const imgElement = document.createElement('img');
-        imgElement.src = 'Suit=Other, Number=Back Blue.png';
-        imgElement.alt = 'Card Back';
-        imgElement.className = 'card-img';
-        
-        imgElement.onerror = function() {
-            // Fallback if no card back image
-            cardElement.innerHTML = '';
-            cardElement.classList.add('fallback-card-back');
-        };
-        
-        cardElement.appendChild(imgElement);
-        
-        return cardElement;
-    }
-    // Create a card element
+    
+    // Create a card element using image files
     function createCardElement(card, small = false) {
         const cardElement = document.createElement('div');
         cardElement.className = `card${small ? ' small' : ''}`;
         cardElement.classList.add('selected');
         
-        const color = SUIT_COLORS[card.suit];
-        const fontSize = small ? '12px' : '14px';
-        const symbolSize = small ? '18px' : '24px';
+        // Get the proper name format for the card
+        const suitName = SUIT_NAMES[card.suit];
+        const rankName = RANK_NAMES[card.rank];
         
-        cardElement.innerHTML = `
-            <div style="color: ${color}; position: absolute; top: 3px; left: 3px; font-size: ${fontSize};">${card.rank}</div>
-            <div style="color: ${color}; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: ${symbolSize};">${SUIT_SYMBOLS[card.suit]}</div>
-            <div style="color: ${color}; position: absolute; bottom: 3px; right: 3px; font-size: ${fontSize};">${card.rank}</div>
-        `;
+        // Create image element
+        const imgElement = document.createElement('img');
+        imgElement.src = `Suit=${suitName}, Number=${rankName}.png`;
+        imgElement.alt = `${card.rank}${card.suit}`;
+        imgElement.className = 'card-img';
+        
+        // Fallback if image fails to load
+        imgElement.onerror = function() {
+            console.warn(`Failed to load image for ${card.rank}${card.suit}`);
+            cardElement.innerHTML = '';
+            
+            const color = SUIT_COLORS[card.suit];
+            const fontSize = small ? '12px' : '14px';
+            const symbolSize = small ? '18px' : '24px';
+            
+            cardElement.innerHTML = `
+                <div style="color: ${color}; position: absolute; top: 3px; left: 3px; font-size: ${fontSize};">${card.rank}</div>
+                <div style="color: ${color}; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: ${symbolSize};">${SUIT_SYMBOLS[card.suit]}</div>
+                <div style="color: ${color}; position: absolute; bottom: 3px; right: 3px; font-size: ${fontSize};">${card.rank}</div>
+            `;
+        };
+        
+        cardElement.appendChild(imgElement);
         
         return cardElement;
     }
@@ -425,7 +435,7 @@ function renderPlayerCards(player) {
     }
     
     // Remove a player's card
-    function removePlayerCard(player, card) {
+    function removePlayerCard(player , card) {
         player.removeCard(card);
         renderPlayerCards(player);
         renderCardDeck();
@@ -498,6 +508,8 @@ function renderPlayerCards(player) {
         if (player.id !== 0) {
             // Populate modal
             document.getElementById('playerName').value = player.name;
+            
+            // Set radio buttons
             document.querySelectorAll('input[name="playerStatus"]').forEach(radio => {
                 if ((radio.value === 'active' && player.active) || 
                     (radio.value === 'folded' && !player.active)) {
@@ -505,9 +517,86 @@ function renderPlayerCards(player) {
                 }
             });
             
+            document.querySelectorAll('input[name="cardVisibility"]').forEach(radio => {
+                if ((radio.value === 'visible' && player.cardsVisible) || 
+                    (radio.value === 'hidden' && !player.cardsVisible)) {
+                    radio.checked = true;
+                }
+            });
+            
+            // Display player's cards in modal
+            const modalCardSelection = document.getElementById('modalCardSelection');
+            modalCardSelection.innerHTML = '';
+            
+            // Create card placeholders
+            for (let i = 0; i < 2; i++) {
+                if (player.cards[i]) {
+                    const card = player.cards[i];
+                    const cardElement = createCardElement(card);
+                    cardElement.addEventListener('click', () => {
+                        player.removeCard(card);
+                        openPlayerEditModal(player); // Refresh modal
+                    });
+                    modalCardSelection.appendChild(cardElement);
+                } else {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'card-placeholder';
+                    placeholder.textContent = '+';
+                    placeholder.addEventListener('click', () => {
+                        // Open card selection
+                        showCardSelectionInModal(player, i);
+                    });
+                    modalCardSelection.appendChild(placeholder);
+                }
+            }
+            
             // Show modal
             playerEditModal.style.display = 'block';
         }
+    }
+    
+    // Show card selection in modal
+    function showCardSelectionInModal(player, cardIndex) {
+        const modalCardSelection = document.getElementById('modalCardSelection');
+        modalCardSelection.innerHTML = '<h4>Select a card</h4>';
+        
+        // Get all used cards
+        const usedCards = [];
+        state.players.forEach(p => {
+            usedCards.push(...p.cards);
+        });
+        usedCards.push(...state.communityCards);
+        
+        // Filter available cards
+        const availableCards = state.deck.filter(card => 
+            !usedCards.some(usedCard => 
+                usedCard && usedCard.equals(card)
+            )
+        );
+        
+        // Display available cards for selection
+        const cardGrid = document.createElement('div');
+        cardGrid.className = 'modal-card-grid';
+        
+        for (let card of availableCards) {
+            const cardElement = createCardElement(card);
+            cardElement.addEventListener('click', () => {
+                player.addCard(card);
+                openPlayerEditModal(player); // Refresh modal
+            });
+            cardGrid.appendChild(cardElement);
+        }
+        
+        // Add a cancel button
+        const cancelButton = document.createElement('button');
+        cancelButton.className = 'btn cancel-btn mt-3';
+        cancelButton.textContent = 'Cancel';
+        cancelButton.addEventListener('click', () => {
+            openPlayerEditModal(player); // Refresh modal without selecting
+        });
+        
+        modalCardSelection.appendChild(cardGrid);
+        modalCardSelection.appendChild(cancelButton);
     }
     
     // Save player details from modal
@@ -518,6 +607,7 @@ function renderPlayerCards(player) {
         // Update player info
         player.name = document.getElementById('playerName').value || `Player ${player.id}`;
         player.active = document.querySelector('input[name="playerStatus"]:checked').value === 'active';
+        player.cardsVisible = document.querySelector('input[name="cardVisibility"]:checked').value === 'visible';
         
         // Update UI
         renderPlayerPositions();
@@ -687,7 +777,7 @@ function renderPlayerCards(player) {
             straightHigh = Math.max(...ranks);
         } 
         // Check for A-5 straight (special case)
-        else if (JSON.stringify([...new Set(ranks )].sort((a, b) => a - b)) === JSON.stringify([0, 1, 2, 3, 12])) {
+        else if (JSON.stringify([...new Set(ranks)].sort((a, b) => a - b)) === JSON.stringify([0, 1, 2, 3, 12])) {
             isStraight = true;
             straightHigh = 3; // 5 is high card in A-5 straight
         }
@@ -741,7 +831,7 @@ function renderPlayerCards(player) {
         }
         
         // Three of a Kind
-        for (let rank in rankCounts) {
+        for (let rank in rankC ounts) {
             if (rankCounts[rank] === 3) {
                 const otherCards = ranks.filter(r => r !== parseInt(rank)).sort((a, b) => b - a);
                 return [3, [parseInt(rank), ...otherCards]];
