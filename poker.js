@@ -80,7 +80,7 @@ function renderCardDeck() {
             const card = new Card(rank, suit);
             const cardElement = document.createElement('img');
             cardElement.classList.add('playing-card');
-            cardElement.src = `cards/Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
+            cardElement.src = `Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
             cardElement.alt = `${rank}${suit}`;
             cardElement.dataset.rank = rank;
             cardElement.dataset.suit = suit;
@@ -104,7 +104,7 @@ function renderPlayerHand() {
             const card = state.myHand[i];
             const cardElement = document.createElement('img');
             cardElement.classList.add('playing-card');
-            cardElement.src = `cards/Suit=${SUIT_NAMES[card.suit]}, Number=${RANK_NAMES[card.rank]}.png`;
+            cardElement.src = `Suit=${SUIT_NAMES[card.suit]}, Number=${RANK_NAMES[card.rank]}.png`;
             cardElement.alt = card.toString();
             cardElement.addEventListener('click', () => removeCard(card, 'hand'));
             placeholder.appendChild(cardElement);
@@ -129,7 +129,7 @@ function renderCommunityCards() {
             const card = state.communityCards[i];
             const cardElement = document.createElement('img');
             cardElement.classList.add('playing-card');
-            cardElement.src = `cards/Suit=${SUIT_NAMES[card.suit]}, Number=${RANK_NAMES[card.rank]}.png`;
+            cardElement.src = `Suit=${SUIT_NAMES[card.suit]}, Number=${RANK_NAMES[card.rank]}.png`;
             cardElement.alt = card.toString();
             cardElement.addEventListener('click', () => removeCard(card, 'community'));
             placeholder.appendChild(cardElement);
