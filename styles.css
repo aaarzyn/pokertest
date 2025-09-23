@@ -1,0 +1,56 @@
+body {
+    background-color: #35654d;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    margin-bottom: 20px;
+    border: 2px solid #2d3e40;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.playing-card {
+    width: 80px;
+    height: 120px;
+    margin: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.playing-card:hover {
+    transform: translateY(-10px);
+}
+
+.playing-card.selected {
+    box-shadow: 0 0 10px 3px gold;
+}
+
+.card-placeholder {
+    width: 80px;
+    height: 120px;
+    margin: 5px;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#results {
+    min-height: 100px;
+}
+
+.hand-type {
+    font-weight: bold;
+    color: gold;
+}
+
+.probability {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffc107;
+}
