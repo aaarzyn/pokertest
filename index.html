@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Probability Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4">Poker Probability Calculator</h1>
+        
+        <!-- Player Count -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <label for="playerCount" class="form-label">Number of Players:</label>
+                <input type="number" id="playerCount" class="form-control" min="2" max="10" value="2">
+            </div>
+        </div>
+        
+        <!-- Card Selection -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>Select Cards</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="cardDeck" class="d-flex flex-wrap justify-content-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Your Hand -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Your Hand</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="playerHand" class="d-flex justify-content-center"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Community Cards -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5>Community Cards</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="communityCards" class="d-flex justify-content-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3 text-center">
+                <button id="calculateButton" class="btn btn-success me-3">Calculate Odds</button>
+                <button id="resetButton" class="btn btn-danger">Reset Cards</button>
+            </div>
+        </div>
+        
+        <!-- Results -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5>Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" class="text-center">
+                            <p>Select your cards and the community cards to calculate your odds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="poker.js"></script>
+</body>
+</html>
