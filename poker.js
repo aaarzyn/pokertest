@@ -1,20 +1,31 @@
-// Constants
-const SUITS = ["H", "D", "C", "S"]; // hearts, diamonds, clubs, spades
-const RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; // ace marked as highest
+/***
+Texas Hold'em Poker Probability Calculator
+
+This program takes in a series of cards provided and calculates your chance of having the best hand of the players. 
+It depends on what cards you have, what cards are down, and how many people are playing.
+
+It works specifically for texas hold 'em poker where you get two cards in your hand and three cards are placed down, then one more, 
+then one last card, and you make the best hand of five using the total possible seven cards. 
+***/
+
+
+
+const SUITS = ["H", "D", "C", "S"]; // hearts, diamonds, clubs, and spades
+const RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]; // ace marked as highest for high card reasons
+// indexes 0 to 12 for 2 to 13/A
 const SUIT_NAMES = {"H": "Hearts", "D": "Diamonds", "C": "Clubs", "S": "Spades"};
-const SUIT_SYMBOLS = {"H": "♥", "D": "♦", "C": "♣", "S": "♠"};
+const SUIT_SYMBOLS = {"H": "♥", "D": "♦", "C":"♣", "S": "♠" };
 const SUIT_COLORS = {"H": "red", "D": "red", "C": "black", "S": "black"};
-const RANK_NAMES = {
-    "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9", 
-    "10": "10", "J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"
-};
-const HAND_TYPES = [
-    "High Card", "One Pair", "Two Pair", "Three of a Kind", 
-    "Straight", "Flush", "Full House", "Four of a Kind", 
+const RANK_NAMES = {"2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9", "10": "10", "J": "Jack", "Q": "Queen", "K": "King", "A": "Ace"}; // # ace marked as highest for high card reasons
+const HAND_TYPES = ["High Card", "One Pair", "Two Pair", "Three of a Kind",
+    "Straight", "Flush", "Full House", "Four of a Kind",
     "Straight Flush", "Royal Flush"
 ];
 
-// card
+
+
+
+// card 
 class Card {
     constructor(rank, suit) {
         if (!RANKS.includes(rank)) {
@@ -23,21 +34,22 @@ class Card {
         if (!SUITS.includes(suit)) {
             throw new Error(`Invalid suit: ${suit}`);
         }
-        
+     
         this.rank = rank;
         this.suit = suit;
         this.rankValue = RANKS.indexOf(rank);
     }
     
     toString() {
-        return `${this.rank}${this.suit}`;
+      return `${this.rank}${this.suit}`;
     }
-    
+  
     equals(other) {
         if (!other) return false;
-        return this.rank === other.rank && this.suit === other.suit;
+      return this.rank === other.rank && this.suit === other.suit;
     }
 }
+
 
 // player
 class Player {
@@ -45,7 +57,7 @@ class Player {
         this.id = id;
         this.name = name || `Player ${id}`;
         this.position = position;
-        this.cards = [];
+       this.cards = [];
         this.active = active;
         this.cardsVisible = false; // Whether opponent cards are visible
     }
@@ -70,7 +82,7 @@ class Player {
 // app state
 const state = {
     players: [],
-    communityCards: [],
+ communityCards: [],
     deck: createDeck(),
     activeSuit: 'all',
     selectedPlayerId: 0, // 0 is you
@@ -91,36 +103,36 @@ function createDeck() {
 
 // init players
 function initializePlayers(count) {
-    // Create players array with exact count
     const players = [];
-    
-    // Create 'you' player (always first)
+    // Create 'you' player first
     players.push(new Player(0, "YOU", 1, true));
     
     // Create other players
-    for (let i = 1; i < count; i++) {
+    for (let i = 1; i < count + 1; i++) {
         players.push(new Player(i, `Player ${i + 1}`, i + 1, true));
     }
     
     return players;
 }
+
+
 // init images of cards
 function preloadCardImages() {
-    // Regular cards
     for (let suit of SUITS) {
         for (let rank of RANKS) {
             const img = new Image();
-            img.src = `Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
+            img.src = `cards/Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
         }
     }
     
     // Special cards
     const backImg = new Image();
-    backImg.src = 'Suit=Other, Number=Back Blue.png';
+    backImg.src = 'cards/Suit=Other, Number=Back Blue.png';
     
     const jokerImg = new Image();
-    jokerImg.src = 'Suit=Other, Number=Joker.png';
+    jokerImg.src = 'cards/Suit=Other, Number=Joker.png';
 }
+
 
 // check load
 document.addEventListener('DOMContentLoaded', () => {
@@ -129,10 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // init doc refs
     const cardDeck = document.getElementById('cardDeck');
-    const communityCards = document.getElementById('communityCards');
+ const communityCards = document.getElementById('communityCards');
     const calculateButton = document.getElementById('calculateButton');
     const resetButton = document.getElementById('resetButton');
-    const results = document.getElementById('results');
+   const results = document.getElementById('results');
     const playerCount = document.getElementById('playerCount');
     const playerCountValue = document.getElementById('playerCountValue');
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -144,35 +156,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const savePlayerButton = document.getElementById('savePlayerButton');
     const toggleThemeButton = document.getElementById('toggleThemeButton');
     const layoutButton = document.getElementById('layoutButton');
-    
-    // init app
+
     initialize();
     
-    function initialize() {
+   function initialize() {
         preloadCardImages();
-        state.players = initializePlayers(state.playerCount); 
+    state.players = initializePlayers(state.playerCount);
         renderPlayerPositions();
         renderCardDeck();
         renderCommunityCards();
         
         // my hand default
         updateSelectedPlayerInfo(state.players[0]);
-
         playerCount.value = state.playerCount;
         playerCountValue.textContent = state.playerCount;
-
-        updatePlayerCount(state.playerCount);
+     updatePlayerCount(state.playerCount);
         
         calculateButton.addEventListener('click', calculateProbability);
-        resetButton.addEventListener('click', resetCards);
+     resetButton.addEventListener('click', resetCards);
         
         // slider
         playerCount.addEventListener('input', () => {
-            const count = parseInt(playerCount.value);
+         const count = parseInt(playerCount.value);
             playerCountValue.textContent = count;
             updatePlayerCount(count);
         });
-        
+      
         // active not active
         playerActiveToggle.addEventListener('change', () => {
             // not on self
@@ -181,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (playerActiveToggle.checked) {
                     statusLabel.textContent = 'Active';
                     statusLabel.classList.remove('folded');
-                    statusLabel.classList.add('active');
+                  statusLabel.classList.add('active');
                     state.players[state.selectedPlayerId].active = true;
                 } else {
                     statusLabel.textContent = 'Folded';
@@ -192,17 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderPlayerPositions();
             }
         });
-        
+       
         // type filter
         tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
+          button.addEventListener('click', () => {
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 state.activeSuit = button.dataset.suit;
                 renderCardDeck();
-            });
+          });
         });
-        
+      
         // help
         infoButton.addEventListener('click', () => {
             helpModal.style.display = 'block';
@@ -211,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // closing
         closeModalButtons.forEach(button => {
             button.addEventListener('click', () => {
-                helpModal.style.display = 'none';
+               helpModal.style.display = 'none';
                 playerEditModal.style.display = 'none';
             });
         });
@@ -234,46 +243,43 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // layout toggle
         layoutButton.addEventListener('click', toggleLayout);
-    }
+   }
     
     // update info in ui
     function updateSelectedPlayerInfo(player) {
         state.selectedPlayerId = player.id;
         document.querySelector('.selected-player-name').textContent = player.name;
         
-        // opp active toggles 
-        const statusControlsContainer = document.querySelector('.player-status-controls');
+        // opp active toggles
+       const statusControlsContainer = document.querySelector('.player-status-controls');
         if (player.id === 0) {
-            statusControlsContainer.style.display = 'none';
+          statusControlsContainer.style.display = 'none';
         } else {
-            statusControlsContainer.style.display = 'flex';
-            playerActiveToggle.checked = player.active;
+         statusControlsContainer.style.display = 'flex';
+           playerActiveToggle.checked = player.active;
             
-            const statusLabel = document.querySelector('.status-label');
+         const statusLabel = document.querySelector('.status-label');
             if (player.active) {
-                statusLabel.textContent = 'Active';
-                statusLabel.classList.remove('folded');
-                statusLabel.classList.add('active');
+             statusLabel.textContent = 'Active';
+               statusLabel.classList.remove('folded');
+               statusLabel.classList.add('active');
             } else {
                 statusLabel.textContent = 'Folded';
-                statusLabel.classList.remove('active');
+             statusLabel.classList.remove('active');
                 statusLabel.classList.add('folded');
             }
         }
     }
     
     // pos render
-function renderPlayerPositions() {
-    const positionsContainer = document.querySelector('.player-positions');
-    positionsContainer.innerHTML = '';
-    
-    // Ensure we're only working with players within the player count
-    const validPlayers = state.players.slice(0, state.playerCount);
-    
-    // First handle the "YOU" player separately
-    const youPlayer = validPlayers.find(p => p.id === 0);
-    if (youPlayer) {
-        const position = document.createElement('div');
+    function renderPlayerPositions() {
+        const positionsContainer = document.querySelector('.player-positions');
+        positionsContainer.innerHTML = '';
+        const validPlayers = state.players.slice(0, state.playerCount);
+        const youPlayer = validPlayers.find(p => p.id === 0);
+
+        if (youPlayer) {
+     const position = document.createElement('div');
         position.className = `player-position position-1`;
         position.classList.add('you');
         
@@ -286,15 +292,15 @@ function renderPlayerPositions() {
             <div class="player-cards" id="player${youPlayer.id}Cards"></div>
         `;
         
-        position.addEventListener('click', () => {
+       position.addEventListener('click', () => {
             updateSelectedPlayerInfo(youPlayer);
-        });
+       });
         
         positionsContainer.appendChild(position);
         renderPlayerCards(youPlayer);
-    }
-    
-    // Then handle opponent players
+        }
+
+        // Then handle opponent players
     const opponentPlayers = validPlayers.filter(p => p.id !== 0);
     
     opponentPlayers.forEach((player, index) => {
@@ -302,19 +308,19 @@ function renderPlayerPositions() {
         position.className = `player-position position-${index + 2}`;
         
         if (!player.active) {
-            position.classList.add('folded');
+         position.classList.add('folded');
         }
         
-        position.innerHTML = `
+     position.innerHTML = `
             <div class="player-label">${player.name}</div>
             <div class="player-cards" id="player${player.id}Cards"></div>
         `;
         
         position.addEventListener('click', () => {
-            updateSelectedPlayerInfo(player);
+         updateSelectedPlayerInfo(player);
             
             if (player.id !== 0) {
-                openPlayerEditModal(player);
+               openPlayerEditModal(player);
             }
         });
         
@@ -338,18 +344,18 @@ function renderPlayerPositions() {
         // placeholders
         for (let i = 0; i < 2; i++) {
             if (player.cards[i]) {
-                if (cardsVisible) {
-                    const card = player.cards[i];
+              if (cardsVisible) {
+                const card = player.cards[i];
                     const cardElement = createCardElement(card, true);
                     cardElement.addEventListener('click', (e) => {
                         e.stopPropagation();
                         removePlayerCard(player, card);
                     });
-                    cardsContainer.appendChild(cardElement);
-                } else {
-                    const cardBack = createCardBackElement(true);
+                   cardsContainer.appendChild(cardElement);
+              } else {
+               const cardBack = createCardBackElement(true);
                     cardsContainer.appendChild(cardBack);
-                }
+              }
             } else {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'card-placeholder small';
@@ -359,17 +365,17 @@ function renderPlayerPositions() {
         }
     }
     
-    // card back
+   // card back
     function createCardBackElement(small = false) {
         const cardElement = document.createElement('div');
         cardElement.className = `card card-back${small ? ' small' : ''}`;
         
         const imgElement = document.createElement('img');
-        imgElement.src = 'Suit=Other, Number=Back Blue.png';
+        imgElement.src = 'cards/Suit=Other, Number=Back Blue.png';
         imgElement.alt = 'Card Back';
         imgElement.className = 'card-img';
-
         // backup
+// init app
         imgElement.onerror = function() {
             cardElement.innerHTML = '';
             cardElement.classList.add('fallback-card-back');
@@ -381,10 +387,11 @@ function renderPlayerPositions() {
     }
     
     // deck render
+    
     function renderCardDeck() {
         cardDeck.innerHTML = '';
         
-        // used 
+        // used
         const usedCards = [];
         state.players.forEach(player => {
             usedCards.push(...player.cards);
@@ -392,27 +399,27 @@ function renderPlayerPositions() {
         usedCards.push(...state.communityCards);
         
         // removed used
-        const availableCards = state.deck.filter(card => 
-            !usedCards.some(usedCard => 
+       const availableCards = state.deck.filter(card =>
+            !usedCards.some(usedCard =>
                 usedCard && usedCard.equals(card)
             )
-        );
+       );
         
         // suit filter
-        const filteredCards = state.activeSuit === 'all' 
-            ? availableCards 
+      const filteredCards = state.activeSuit === 'all'
+            ? availableCards
             : availableCards.filter(card => card.suit === state.activeSuit);
         
         // card set up
         for (let card of filteredCards) {
-            const cardElement = createCardElement(card);
+         const cardElement = createCardElement(card);
             cardElement.addEventListener('click', () => selectCard(card));
             cardDeck.appendChild(cardElement);
         }
     }
     
     // comm card set up
-    function renderCommunityCards() {
+  function renderCommunityCards() {
         communityCards.innerHTML = '';
         
         // five placeholders for table
@@ -425,13 +432,13 @@ function renderPlayerPositions() {
             } else {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'card-placeholder';
-                placeholder.textContent = '?';
+             placeholder.textContent = '?';
                 communityCards.appendChild(placeholder);
             }
         }
         
         updateCalculateButton();
-    }
+  }
     
     // img file use
     function createCardElement(card, small = false) {
@@ -444,14 +451,14 @@ function renderPlayerPositions() {
         
         // make elem
         const imgElement = document.createElement('img');
-        imgElement.src = `Suit=${suitName}, Number=${rankName}.png`;
+      imgElement.src = `cards/Suit=${suitName}, Number=${rankName}.png`;
         imgElement.alt = `${card.rank}${card.suit}`;
         imgElement.className = 'card-img';
         
         // backup
         imgElement.onerror = function() {
             console.warn(`Failed to load image for ${card.rank}${card.suit}`);
-            cardElement.innerHTML = '';
+         cardElement.innerHTML = '';
             
             const color = SUIT_COLORS[card.suit];
             const fontSize = small ? '12px' : '14px';
@@ -459,7 +466,7 @@ function renderPlayerPositions() {
             
             cardElement.innerHTML = `
                 <div style="color: ${color}; position: absolute; top: 3px; left: 3px; font-size: ${fontSize};">${card.rank}</div> <div style="color: ${color}; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: ${symbolSize};">${SUIT_SYMBOLS[card.suit]}</div>
-                <div style="color: ${color}; position: absolute; bottom: 3px; right: 3px; font-size: ${fontSize};">${card.rank}</div>
+<div style="color: ${color}; position: absolute; bottom: 3px; right: 3px; font-size: ${fontSize};">${card.rank}</div>
             `;
         };
         
@@ -468,21 +475,24 @@ function renderPlayerPositions() {
         return cardElement;
     }
     
-    // card select
+    
+
+// card select
+
     function selectCard(card) {
         const player = state.players[state.selectedPlayerId];
         
         // check for two cards, add to player
-        if (player && player.cards.length < 2) {
+       if (player && player.cards.length < 2) {
             player.addCard(card);
             renderPlayerCards(player);
             renderCardDeck();
-        }
+       }
         // comm card backup
         else if (state.communityCards.length < 5) {
             state.communityCards.push(card);
-            renderCommunityCards();
-            renderCardDeck();
+         renderCommunityCards();
+          renderCardDeck();
         }
         
         updateCalculateButton();
@@ -491,24 +501,24 @@ function renderPlayerPositions() {
     // comm card remove
     function removeCard(card) {
         state.communityCards = state.communityCards.filter(c => !c.equals(card));
-        renderCommunityCards();
+       renderCommunityCards();
         renderCardDeck();
         updateCalculateButton();
     }
     
     // player card remove
-    function removePlayerCard(player, card) {
+  function removePlayerCard(player, card) {
         player.removeCard(card);
         renderPlayerCards(player);
         renderCardDeck();
         updateCalculateButton();
-    }
+  }
     
     // card reset
     function resetCards() {
-        state.players.forEach(player => player.clearCards());
+     state.players.forEach(player => player.clearCards());
         state.communityCards = [];
-        
+     
         renderPlayerPositions();
         renderCommunityCards();
         renderCardDeck();
@@ -519,19 +529,18 @@ function renderPlayerPositions() {
             </div>
             <p>Select your cards and the community cards to calculate your odds.</p>
         `;
-        
-        updateCalculateButton();
+      
+     updateCalculateButton();
     }
     
     // player count update
- function updatePlayerCount(count) {
-    // Store the old player count
+    function updatePlayerCount(count) {
+
     const oldCount = state.playerCount;
-    
-    // Update state
+        // Update state
     state.playerCount = count;
     
-    // If we're reducing player count, preserve existing players but trim the array
+ // If we're reducing player count, preserve existing players but trim the array
     if (count < oldCount && state.players.length > count) {
         state.players = state.players.slice(0, count);
     }
@@ -546,8 +555,8 @@ function renderPlayerPositions() {
     
     renderPlayerPositions();
     updateCalculateButton();
-}
-    
+    }
+
     //button calc
     function updateCalculateButton() {
         const you = state.players.find(p => p.id === 0);
@@ -558,22 +567,22 @@ function renderPlayerPositions() {
     }
     
     function openPlayerEditModal(player) {
-        // edit 
+        // edit
         if (player.id !== 0) {
             document.getElementById('playerName').value = player.name;
             
             document.querySelectorAll('input[name="playerStatus"]').forEach(radio => {
-                if ((radio.value === 'active' && player.active) || 
+                if ((radio.value === 'active' && player.active) ||
                     (radio.value === 'folded' && !player.active)) {
-                    radio.checked = true;
-                }
+                 radio.checked = true;
+                    }
             });
-            
+          
             document.querySelectorAll('input[name="cardVisibility"]').forEach(radio => {
-                if ((radio.value === 'visible' && player.cardsVisible) || 
-                    (radio.value === 'hidden' && !player.cardsVisible)) {
+                if ((radio.value === 'visible' && player.cardsVisible) ||
+                   (radio.value === 'hidden' && !player.cardsVisible)) {
                     radio.checked = true;
-                }
+                   }
             });
             
             const modalCardSelection = document.getElementById('modalCardSelection');
@@ -590,14 +599,14 @@ function renderPlayerPositions() {
                     });
                     modalCardSelection.appendChild(cardElement);
                 } else {
-                    const placeholder = document.createElement('div');
+                   const placeholder = document.createElement('div');
                     placeholder.className = 'card-placeholder';
-                    placeholder.textContent = '+';
+                 placeholder.textContent = '+';
                     placeholder.addEventListener('click', () => {
                         // Open card selection
                         showCardSelectionInModal(player, i);
                     });
-                    modalCardSelection.appendChild(placeholder);
+                 modalCardSelection.appendChild(placeholder);
                 }
             }
             
@@ -613,9 +622,8 @@ function renderPlayerPositions() {
             usedCards.push(...p.cards);
         });
         usedCards.push(...state.communityCards);
-
-        const availableCards = state.deck.filter(card => 
-            !usedCards.some(usedCard => 
+        const availableCards = state.deck.filter(card =>
+            !usedCards.some(usedCard =>
                 usedCard && usedCard.equals(card)
             )
         );
@@ -624,12 +632,12 @@ function renderPlayerPositions() {
         cardGrid.className = 'modal-card-grid';
         
         for (let card of availableCards) {
-            const cardElement = createCardElement(card);
+     const cardElement = createCardElement(card);
             cardElement.addEventListener('click', () => {
                 player.addCard(card);
-                openPlayerEditModal(player); // Refresh modal
+             openPlayerEditModal(player); // Refresh modal
             });
-            cardGrid.appendChild(cardElement);
+         cardGrid.appendChild(cardElement);
         }
         
         const cancelButton = document.createElement('button');
@@ -640,35 +648,38 @@ function renderPlayerPositions() {
         });
         
         modalCardSelection.appendChild(cardGrid);
-        modalCardSelection.appendChild(cancelButton);
+     modalCardSelection.appendChild(cancelButton);
     }
-
     function savePlayerDetails() {
+// card select
         const player = state.players[state.selectedPlayerId];
         if (!player) return;
         if (player.id === 0) {
-            player.name = document.getElementById('playerName').value || "YOU";
-        } else {
-            player.name = document.getElementById('playerName').value || `Player ${player.id+1}`;
-        }
+player.name = document.getElementById('playerName').value || "YOU"; }
+else {
+        player.name = document.getElementById('playerName').value || `Player ${player.id + 1}`;}
         player.active = document.querySelector('input[name="playerStatus"]:checked').value === 'active';
-        player.cardsVisible = document.querySelector('input[name="cardVisibility"]:checked').value === 'visible';
+     player.cardsVisible = document.querySelector('input[name="cardVisibility"]:checked').value === 'visible';
         
         renderPlayerPositions();
         updateSelectedPlayerInfo(player);
         
-        playerEditModal.style.display = 'none';
+       playerEditModal.style.display = 'none';
     }
+
+
+// toggles
+
 
 // theme toggle
     function toggleTheme() {
-        document.body.classList.toggle('light-theme');
-        const icon = toggleThemeButton.querySelector('i');
-        if (document.body.classList.contains('light-theme')) {
+   document.body.classList.toggle('light-theme');
+      const icon = toggleThemeButton.querySelector('i');
+      if (document.body.classList.contains('light-theme')) {
             toggleThemeButton.innerHTML = '<i class="fas fa-sun"></i> Light';
-        } else {
+      } else {
             toggleThemeButton.innerHTML = '<i class="fas fa-moon"></i> Dark';
-        }
+      }
     }
     
     // layout toggle
@@ -676,10 +687,29 @@ function renderPlayerPositions() {
         state.layoutType = state.layoutType === 'circle' ? 'rectangle' : 'circle';
         document.querySelector('.poker-table').classList.toggle('rectangular');
         layoutButton.innerHTML = state.layoutType === 'circle' 
-            ? '<i class="fas fa-table"></i> Layout'
+         ? '<i class="fas fa-table"></i> Layout'
             : '<i class="fas fa-circle"></i> Layout';
     }
-    
+   
+
+// probability stuff
+/***
+Evaluates a 5-card poker hand to return score and tie-breaker information. 
+
+Hand rankings by score
+9: Royal Flush (straight, flush, AKQJ10)
+8: Straight Flush (straight, flush, need to know what highest card value is)
+7: Four of a Kind (all four same card rank, need to know value)
+6: Full House (three of a kind, pair, need to know values of each)
+5: Flush (all five one suit, need to know values)
+4: Straight (five in a row, need to know high card)
+3: Three of a Kind (three of same value, need to know value)
+2: Two Pair (two pairs, need to know values)
+1: One Pair (one pair, need to know value)
+0: High Card (purely value based)
+
+Returns a tuple (score, [tie_breakers])
+***/ 
     function calculateProbability() {
         try {
             const you = state.players.find(p => p.id === 0);
@@ -691,8 +721,6 @@ function renderPlayerPositions() {
             if (state.communityCards.length !== 5) {
                 throw new Error("All 5 community cards must be provided.");
             }
-            
-        
             const activePlayers = state.players.filter(p => p.active && p.id < state.playerCount);
             
             if (activePlayers.length < 2) {
@@ -713,24 +741,24 @@ function renderPlayerPositions() {
             
             // result html
             let resultHTML = `<div class="results-header"><i class="fas fa-chart-line"></i> Hand Analysis</div>`;
-            
+          
             // hand details
             resultHTML += `
-                <div class="result-details">
+             <div class="result-details">
                     <p><strong>Your Hand:</strong> ${myHandStr}</p>
                     <p><strong>Community Cards:</strong> ${communityStr}</p>
                     <p><strong>Best Five-Card Hand:</strong> ${bestHandStr}`;
             
-            // royal flush style
+       // royal flush style
             if (handType === "Royal Flush") {
-                resultHTML += ` (<span class="royal-flush">${handType}</span>)</p>`;
+               resultHTML += ` (<span class="royal-flush">${handType}</span>)</p>`;
             } else {
-                resultHTML += ` (<strong>${handType}</strong>)</p>`;
+              resultHTML += ` (<strong>${handType}</strong>)</p>`;
             }
             
             resultHTML += `
                     <p><strong>Active Players:</strong> ${activePlayers.length}</p>
-                    <p><strong>Probability of Winning:</strong> <span style="color: gold; font-weight: bold; font-size: 1.2em;">${(probability * 100).toFixed(2)}%</span></p>
+                 <p><strong>Probability of Winning:</strong> <span style="color: gold; font-weight: bold; font-size: 1.2em;">${(probability * 100).toFixed(2)}%</span></p>
                 </div>
             `;
             
@@ -738,30 +766,30 @@ function renderPlayerPositions() {
             if (knownOpponents.length > 0) {
                 resultHTML += `<div style="margin-top: 15px;"><strong>Known Opponent Hands:</strong></div>`;
                 
-                knownOpponents.forEach(opponent => {
+              knownOpponents.forEach(opponent => {
                     const opponentCards = opponent.cards.map(card => `${card.rank}${card.suit}`).join(' ');
                     const opponentAllCards = [...opponent.cards, ...state.communityCards];
-                    const opponentBestHand = findBestFive(opponentAllCards);
+                  const opponentBestHand = findBestFive(opponentAllCards);
                     const opponentHandScore = handEvaluator(opponentBestHand);
-                    const opponentHandType = HAND_TYPES[opponentHandScore[0]];
+                  const opponentHandType = HAND_TYPES[opponentHandScore[0]];
                     
-                    const comparison = compareScores(handScore, opponentHandScore);
+                   const comparison = compareScores(handScore, opponentHandScore);
                     let outcomeText = '';
-                    
+                 
                     if (comparison > 0) {
-                        outcomeText = '<span style="color: var(--success-green);">(You Win)</span>';
+                     outcomeText = '<span style="color: var(--success-green);">(You Win)</span>';
                     } else if (comparison < 0) {
-                        outcomeText = '<span style="color: var(--danger-red);">(You Lose)</span>';
+                       outcomeText = '<span style="color: var(--danger-red);">(You Lose)</span>';
                     } else {
-                        outcomeText = '<span style="color: var(--warning-orange);">(Tie)</span>';
+                      outcomeText = '<span style="color: var(--warning-orange);">(Tie)</span>';
                     }
                     
                     resultHTML += `
-                        <div class="result-details" style="margin-top: 10px;">
-                            <p><strong>${opponent.name}:</strong> ${opponentCards} - ${opponentHandType} ${outcomeText}</p>
-                        </div>
+                       <div class="result-details" style="margin-top: 10px;">
+                        <p><strong>${opponent.name}:</strong> ${opponentCards} - ${opponentHandType} ${outcomeText}</p>
+                      </div>
                     `;
-                });
+              });
             }
             
             results.innerHTML = resultHTML;
@@ -781,10 +809,10 @@ function renderPlayerPositions() {
         
         // sort cards by rank value in descending order
         const sortedCards = [...cards].sort((a, b) => b.rankValue - a.rankValue);
-        
+      
         const ranks = sortedCards.map(card => card.rankValue);
         const suits = sortedCards.map(card => card.suit);
-        
+       
         // count occurrences of each rank
         const rankCounts = {};
         for (let rank of ranks) {
@@ -797,7 +825,7 @@ function renderPlayerPositions() {
         // check for straight
         let isStraight = false;
         let straightHigh = -1;
-        
+     
         if (new Set(ranks).size === 5 && Math.max(...ranks) - Math.min(...ranks) === 4) {
             isStraight = true;
             straightHigh = Math.max(...ranks);
@@ -810,7 +838,7 @@ function renderPlayerPositions() {
         
         // royal Flush, check for 10, J, Q, K, A all in the same suit
         if (isFlush) {
-            const royalRanks = [8, 9, 10, 11, 12]; // 10, J, Q, K, A
+           const royalRanks = [8, 9, 10, 11, 12]; // 10, J, Q, K, A
             const hasAllRoyalRanks = royalRanks.every(rank => ranks.includes(rank));
             
             if (hasAllRoyalRanks) {
@@ -827,7 +855,7 @@ function renderPlayerPositions() {
         for (let rank in rankCounts) {
             if (rankCounts[rank] === 4) {
                 const kicker = ranks.find(r => r !== parseInt(rank));
-                return [7, [parseInt(rank), kicker]];
+               return [7, [parseInt(rank), kicker]];
             }
         }
         
@@ -836,7 +864,7 @@ function renderPlayerPositions() {
         let pairRank = null;
         for (let rank in rankCounts) {
             if (rankCounts[rank] === 3) {
-                threeRank = parseInt(rank);
+               threeRank = parseInt(rank);
             } else if (rankCounts[rank] === 2) {
                 pairRank = parseInt(rank);
             }
@@ -845,39 +873,39 @@ function renderPlayerPositions() {
         if (threeRank !== null && pairRank !== null) {
             return [6, [threeRank, pairRank]];
         }
-        
+      
         // Flush
         if (isFlush) {
-            return [5, ranks];
+          return [5, ranks];
         }
         
         // Straight
         if (isStraight) {
-            return [4, [straightHigh]];
+          return [4, [straightHigh]];
         }
         
         // Three of a Kind
-        for (let rank in rankCounts) {
+      for (let rank in rankCounts) {
             if (rankCounts[rank] === 3) {
                 const otherCards = ranks.filter(r => r !== parseInt(rank)).sort((a, b) => b - a);
-                return [3, [parseInt(rank), ...otherCards]];
+               return [3, [parseInt(rank), ...otherCards]];
             }
-        }
-        
-        // Two Pair
+      }
+    
+       // Two Pair
         const pairs = [];
         for (let rank in rankCounts) {
-            if (rankCounts[rank] === 2) {
+          if (rankCounts[rank] === 2) {
                 pairs.push(parseInt(rank));
-            }
+          }
         }
-        
-        if (pairs.length === 2) {
+       
+     if (pairs.length === 2) {
             pairs.sort((a, b) => b - a);
-            const kicker = ranks.find(r => !pairs.includes(r));
+           const kicker = ranks.find(r => !pairs.includes(r));
             return [2, [...pairs, kicker]];
-        }
-        
+     }
+       
         // One Pair
         for (let rank in rankCounts) {
             if (rankCounts[rank] === 2) {
@@ -885,7 +913,7 @@ function renderPlayerPositions() {
                 return [1, [parseInt(rank), ...otherCards]];
             }
         }
-        
+       
         // High Card
         return [0, ranks.sort((a, b) => b - a)];
     }
@@ -896,7 +924,7 @@ function renderPlayerPositions() {
         if (score1[0] > score2[0]) return 1;
         if (score1[0] < score2[0]) return -1;
         
-        // Compare tiebreakers
+       // Compare tiebreakers
         const tiebreakers1 = score1[1];
         const tiebreakers2 = score2[1];
         
@@ -911,7 +939,7 @@ function renderPlayerPositions() {
     // Find best 5-card hand from 7 cards
     function findBestFive(cards) {
         if (cards.length < 5) {
-            throw new Error("Need at least 5 cards to make a hand");
+          throw new Error("Need at least 5 cards to make a hand");
         }
         
         let bestHand = null;
@@ -922,30 +950,29 @@ function renderPlayerPositions() {
         
         for (let combo of combinations) {
             const score = handEvaluator(combo);
-            
-            if (bestHand === null) {
-                bestHand = combo;
-                bestScore = score;
-            } else {
-                const comparison = compareScores(score, bestScore);
-                if (comparison > 0) {
+                
+                if (bestHand === null) {
                     bestHand = combo;
                     bestScore = score;
+                } else {
+                    const comparison = compareScores(score, bestScore);
+                    if (comparison > 0) {
+                            bestHand = combo;
+                            bestScore = score;
+                    }
                 }
             }
-        }
-        
         return bestHand;
     }
     
     // Generate combinations helper function
     function getCombinations(arr, size) {
-        if (size > arr.length) return [];
+     if (size > arr.length) return [];
         if (size === arr.length) return [arr];
         if (size === 1) return arr.map(item => [item]);
         
         return arr.reduce((acc, item, i) => {
-            const remaining = arr.slice(i + 1);
+           const remaining = arr.slice(i + 1);
             const combosWithItem = getCombinations(remaining, size - 1).map(combo => [item, ...combo]);
             return [...acc, ...combosWithItem];
         }, []);
@@ -972,7 +999,7 @@ function calculateWinProbability(myCards, communityCards, activePlayers) {
     const remainingDeck = fullDeck.filter(card => 
         !knownCards.some(known => known.rank === card.rank && known.suit === card.suit)
     );
-    
+   
     // calc possible hands
     const oppHandsCount = combination(remainingDeck.length, 2);
     
@@ -986,7 +1013,7 @@ function calculateWinProbability(myCards, communityCards, activePlayers) {
         const oppBestHand = findBestFive([...oppCards, ...communityCards]);
         const oppScore = handEvaluator(oppBestHand);
         const comparison = compareScores(myScore, oppScore);
-        
+   
         if (comparison > 0) { // Win
             wins++;
         } else if (comparison === 0) { // Tie
@@ -1014,4 +1041,6 @@ function combination(n, k) {
     }
     return result;
 }
+
+
 });
