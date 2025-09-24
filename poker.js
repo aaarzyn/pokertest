@@ -153,6 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCardDeck();
         renderCommunityCards();
         
+        // Always select "Your Hand" by default
+        updateSelectedPlayerInfo(state.players[0]);
+        
         // Event listeners
         calculateButton.addEventListener('click', calculateProbability);
         resetButton.addEventListener('click', resetCards);
@@ -164,21 +167,24 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePlayerCount(count);
         });
         
-        // Player active toggle
+        // Player active toggle - only for opponents, not for "you"
         playerActiveToggle.addEventListener('change', () => {
-            const statusLabel = document.querySelector('.status-label');
-            if (playerActiveToggle.checked) {
-                statusLabel.textContent = 'Active';
-                statusLabel.classList.remove('folded');
-                statusLabel.classList.add('active');
-                state.players[state.selectedPlayerId].active = true;
-            } else {
-                statusLabel.textContent = 'Folded';
-                statusLabel.classList.remove('active');
-                statusLabel.classList.add('folded');
-                state.players[state.selectedPlayerId].active = false;
+            // Only apply to opponent players
+            if (state.selectedPlayerId !== 0) {
+                const statusLabel = document.querySelector('.status-label');
+                if (playerActiveToggle.checked) {
+                    statusLabel.textContent = 'Active';
+                    statusLabel.classList.remove('folded');
+                    statusLabel.classList.add('active');
+                    state.players[state.selectedPlayerId].active = true;
+                } else {
+                    statusLabel.textContent = 'Folded';
+                    statusLabel.classList.remove('active');
+                    statusLabel.classList.add('folded');
+                    state.players[state.selectedPlayerId].active = false;
+                }
+                renderPlayerPositions();
             }
-            renderPlayerPositions();
         });
         
         // Card filter tabs
@@ -224,6 +230,32 @@ document.addEventListener('DOMContentLoaded', () => {
         layoutButton.addEventListener('click', toggleLayout);
     }
     
+    // Update selected player info in the UI
+    function updateSelectedPlayerInfo(player) {
+        state.selectedPlayerId = player.id;
+        document.querySelector('.selected-player-name').textContent = player.name;
+        
+        // Only show active toggle for opponents, not for "you"
+        const statusControlsContainer = document.querySelector('.player-status-controls');
+        if (player.id === 0) {
+            statusControlsContainer.style.display = 'none';
+        } else {
+            statusControlsContainer.style.display = 'flex';
+            playerActiveToggle.checked = player.active;
+            
+            const statusLabel = document.querySelector('.status-label');
+            if (player.active) {
+                statusLabel.textContent = 'Active';
+                statusLabel.classList.remove('folded');
+                statusLabel.classList.add('active');
+            } else {
+                statusLabel.textContent = 'Folded';
+                statusLabel.classList.remove('active');
+                statusLabel.classList.add('folded');
+            }
+        }
+    }
+    
     // Render player positions around the table
     function renderPlayerPositions() {
         const positionsContainer = document.querySelector('.player-positions');
@@ -247,7 +279,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="player-cards" id="player${player.id}Cards"></div>
                 `;
                 
-                position.addEventListener('click', () => openPlayerEditModal(player));
+                position.addEventListener('click', () => {
+                    // Update selected player in UI
+                    updateSelectedPlayerInfo(player);
+                    
+                    // For opponents, open the edit modal
+                    if (player.id !== 0) {
+                        openPlayerEditModal(player);
+                    }
+                });
                 
                 positionsContainer.appendChild(position);
                 
@@ -395,8 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const symbolSize = small ? '18px' : '24px';
             
             cardElement.innerHTML = `
-                <div style="color: ${color}; position: absolute; top: 3px; left: 3px; font-size: ${fontSize};">${card.rank}</div>
-                <div style="color: ${color}; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: ${symbolSize};">${SUIT_SYMBOLS[card.suit]}</div>
+                <div style="color: ${color}; position: absolute; top: 3px; left: 3px; font-size: ${fontSize};">${card.rank}</div> <div style="color: ${color}; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: ${symbolSize};">${SUIT_SYMBOLS[card.suit]}</div>
                 <div style="color: ${color}; position: absolute; bottom: 3px; right: 3px; font-size: ${fontSize};">${card.rank}</div>
             `;
         };
@@ -435,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Remove a player's card
-    function removePlayerCard(player , card) {
+    function removePlayerCard(player, card) {
         player.removeCard(card);
         renderPlayerCards(player);
         renderCardDeck();
@@ -486,24 +525,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Open player edit modal
     function openPlayerEditModal(player) {
-        // Set selected player
-        state.selectedPlayerId = player.id;
-        
-        // Update selected player info in card selection area
-        document.querySelector('.selected-player-name').textContent = player.name;
-        playerActiveToggle.checked = player.active;
-        
-        const statusLabel = document.querySelector('.status-label');
-        if (player.active) {
-            statusLabel.textContent = 'Active';
-            statusLabel.classList.remove('folded');
-            statusLabel.classList.add('active');
-        } else {
-            statusLabel.textContent = 'Folded';
-            statusLabel.classList.remove('active');
-            statusLabel.classList.add('folded');
-        }
-        
         // For standard players, open the edit modal
         if (player.id !== 0) {
             // Populate modal
@@ -611,19 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update UI
         renderPlayerPositions();
-        document.querySelector('.selected-player-name').textContent = player.name;
-        playerActiveToggle.checked = player.active;
-        
-        const statusLabel = document.querySelector('.status-label');
-        if (player.active) {
-            statusLabel.textContent = 'Active';
-            statusLabel.classList.remove('folded');
-            statusLabel.classList.add('active');
-        } else {
-            statusLabel.textContent = 'Folded';
-            statusLabel.classList.remove('active');
-            statusLabel.classList.add('folded');
-        }
+        updateSelectedPlayerInfo(player);
         
         // Close modal
         playerEditModal.style.display = 'none';
@@ -707,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             // Add opponent hands if visible
-            const knownOpponents = activePlayers.filter(p => p.id !== 0 && p.cards.length === 2);
+            const knownOpponents = activePlayers.filter(p => p.id !== 0 && p.cards.length === 2 && p.cardsVisible);
             if (knownOpponents.length > 0) {
                 resultHTML += `<div style="margin-top: 15px;"><strong>Known Opponent Hands:</strong></div>`;
                 
