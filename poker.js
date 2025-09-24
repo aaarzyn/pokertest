@@ -121,16 +121,16 @@ function preloadCardImages() {
     for (let suit of SUITS) {
         for (let rank of RANKS) {
             const img = new Image();
-            img.src = `cards/Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
+            img.src = `Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
         }
     }
     
     // Special cards
     const backImg = new Image();
-    backImg.src = 'cards/Suit=Other, Number=Back Blue.png';
+    backImg.src = 'Suit=Other, Number=Back Blue.png';
     
     const jokerImg = new Image();
-    jokerImg.src = 'cards/Suit=Other, Number=Joker.png';
+    jokerImg.src = 'Suit=Other, Number=Joker.png';
 }
 
 
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.className = `card card-back${small ? ' small' : ''}`;
         
         const imgElement = document.createElement('img');
-        imgElement.src = 'cards/Suit=Other, Number=Back Blue.png';
+        imgElement.src = 'Suit=Other, Number=Back Blue.png';
         imgElement.alt = 'Card Back';
         imgElement.className = 'card-img';
         // backup
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // make elem
         const imgElement = document.createElement('img');
-      imgElement.src = `cards/Suit=${suitName}, Number=${rankName}.png`;
+      imgElement.src = `Suit=${suitName}, Number=${rankName}.png`;
         imgElement.alt = `${card.rank}${card.suit}`;
         imgElement.className = 'card-img';
         
