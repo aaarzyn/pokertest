@@ -831,7 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Three of a Kind
-        for (let rank in rankC ounts) {
+        for (let rank in rankCounts) {
             if (rankCounts[rank] === 3) {
                 const otherCards = ranks.filter(r => r !== parseInt(rank)).sort((a, b) => b - a);
                 return [3, [parseInt(rank), ...otherCards]];
