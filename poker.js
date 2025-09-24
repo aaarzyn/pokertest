@@ -158,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         playerCount.value = state.playerCount;
         playerCountValue.textContent = state.playerCount;
+
+        updatePlayerCount(state.playerCount);
         
         // Event listeners
         calculateButton.addEventListener('click', calculateProbability);
