@@ -88,7 +88,7 @@ header {
     background-color: var(--table-green);
     border-radius: 50%;
     height: 0;
-    padding-bottom: 58%; /* Maintain aspect ratio */
+    padding-bottom: 65%; /* Increased to make table larger */
     position: relative;
     border: 1.8% solid var(--wood-brown);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
@@ -129,9 +129,9 @@ header {
 
 .player-position {
     position: absolute;
-    width: 12%;
+    width: 15%; /* Increased size */
     height: 0;
-    padding-bottom: 10%; /* Maintain aspect ratio */
+    padding-bottom: 15%; /* Increased to match width */
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: var(--border-radius);
     display: flex;
@@ -154,121 +154,121 @@ header {
     font-weight: 500;
 }
 
-/* Improved circular positioning for players */
+/* Improved circular positioning for players - moved further out */
 /* Position 1 is YOU at the bottom center */
 .player-position.position-1 {
-    bottom: 5%;
+    bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 /* Positions 2-11 distributed in a circle */
 .player-position.position-2 {
-    bottom: 15%;
-    right: 20%;
+    bottom: 12%;
+    right: 15%;
 }
 
 .player-position.position-3 {
     bottom: 30%;
-    right: 10%;
+    right: 6%;
 }
 
 .player-position.position-4 {
-    right: 5%;
-    bottom: 45%;
+    right: 2%;
+    bottom: 50%;
 }
 
 .player-position.position-5 {
-    right: 5%;
-    top: 45%;
+    right: 2%;
+    top: 40%;
 }
 
 .player-position.position-6 {
-    top: 30%;
-    right: 10%;
+    top: 20%;
+    right: 6%;
 }
 
 .player-position.position-7 {
-    top: 5%;
+    top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .player-position.position-8 {
-    top: 30%;
-    left: 10%;
+    top: 20%;
+    left: 6%;
 }
 
 .player-position.position-9 {
-    left: 5%;
-    top: 45%;
+    left: 2%;
+    top: 40%;
 }
 
 .player-position.position-10 {
-    left: 5%;
-    bottom: 45%;
+    left: 2%;
+    bottom: 50%;
 }
 
 .player-position.position-11 {
     bottom: 30%;
-    left: 10%;
+    left: 6%;
 }
 
 /* For rectangular table - using percentages */
 .poker-table.rectangular .player-position.position-1 {
-    bottom: 5%;
+    bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-2 {
-    bottom: 5%;
-    right: 30%;
+    bottom: 2%;
+    right: 25%;
 }
 
 .poker-table.rectangular .player-position.position-3 {
-    bottom: 5%;
-    right: 10%;
+    bottom: 2%;
+    right: 5%;
 }
 
 .poker-table.rectangular .player-position.position-4 {
-    right: 3%;
+    right: 1%;
     bottom: 30%;
 }
 
 .poker-table.rectangular .player-position.position-5 {
-    right: 3%;
+    right: 1%;
     top: 30%;
 }
 
 .poker-table.rectangular .player-position.position-6 {
-    top: 5%;
-    right: 10%;
+    top: 2%;
+    right: 5%;
 }
 
 .poker-table.rectangular .player-position.position-7 {
-    top: 5%;
+    top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-8 {
-    top: 5%;
-    left: 30%;
+    top: 2%;
+    left: 25%;
 }
 
 .poker-table.rectangular .player-position.position-9 {
-    top: 5%;
-    left: 10%;
+    top: 2%;
+    left: 5%;
 }
 
 .poker-table.rectangular .player-position.position-10 {
-    left: 3%;
+    left: 1%;
     top: 30%;
 }
 
 .poker-table.rectangular .player-position.position-11 {
-    left: 3%;
+    left: 1%;
     bottom: 30%;
 }
 
@@ -299,7 +299,7 @@ header {
 .community-cards {
     display: flex;
     justify-content: center;
-    gap: 1%;
+    gap: 2%; /* Increased gap between cards */
     flex-wrap: wrap;
 }
 
@@ -307,7 +307,7 @@ header {
 .card {
     width: 100%;
     height: auto;
-    max-width: 219px;
+    max-width: 80px; /* Significantly reduced from original 219px */
     aspect-ratio: var(--card-aspect-ratio);
     position: relative;
     display: inline-block;
@@ -317,7 +317,7 @@ header {
 }
 
 .card.small {
-    width: 175px;
+    max-width: 65px; /* Significantly reduced from original 175px */
 }
 
 .card-img {
@@ -364,10 +364,10 @@ header {
 }
 
 .card-placeholder {
-    width: 219px;
-    height: 304px;
-    max-width: calc(12vw + 15px);
-    max-height: calc((12vw + 15px) * var(--card-aspect-ratio));
+    width: 100%;
+    height: auto;
+    max-width: 80px;
+    aspect-ratio: var(--card-aspect-ratio);
     border: 2px dashed rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     display: inline-flex;
@@ -375,16 +375,13 @@ header {
     align-items: center;
     margin: 0.2%;
     color: rgba(255, 255, 255, 0.5);
-    font-size: clamp(14px, 1.5vw, 24px);
+    font-size: clamp(10px, 1.2vw, 16px);
     transition: all var(--transition-speed);
 }
 
 .card-placeholder.small {
-    width: 175px;
-    height: 243px;
-    max-width: calc(9vw + 12px);
-    max-height: calc((9vw + 12px) * var(--card-aspect-ratio));
-    font-size: clamp(10px, 1.2vw, 18px);
+    max-width: 65px;
+    font-size: clamp(8px, 1vw, 14px);
 }
 
 .player-cards {
@@ -392,8 +389,9 @@ header {
     flex-direction: row;
     justify-content: center;
     gap: 4%;
-    width: 95%;
+    width: 90%; /* Slightly reduced */
     margin-top: auto;
+    margin-bottom: 5px; /* Added bottom margin */
 }
 
 /* Card Suits Colors */
@@ -513,7 +511,7 @@ header {
 
 .tab-btn {
     padding: 8px 15px;
-    margin: 0 5px 5px 0 ;
+    margin : 0 5px 5px 0 ;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 20px;
@@ -1005,342 +1003,300 @@ body.light-theme .rank-desc {
 
 /* ======= Responsive Design ======= */
 @media (max-width: 1400px) {
-.poker-table {
-padding-bottom: 60%;
-}
+    .poker-table {
+        padding-bottom: 65%;
+    }
 
-.player-position {
-    width: 13%;
-    padding-bottom: 11%;
-}
+    .player-position {
+        width: 16%;
+        padding-bottom: 16%;
+    }
 
-.community-area {
-    width: 35%;
-}
+    .community-area {
+        width: 35%;
+    }
 
-.card {
-    max-width: calc(10vw + 15px);
-}
+    .card {
+        max-width: 70px;
+    }
 
-.card.small {
-    max-width: calc(8vw + 12px);
-    max-height: calc((8vw + 12px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 55px;
+    }
 
-.card-placeholder {
-    max-width: calc(10vw + 15px);
-    max-height: calc((10vw + 15px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 70px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(8vw + 12px);
-    max-height: calc((8vw + 12px) * var(--card-aspect-ratio));
-}
-
-.player-position.position-2 {
-    bottom: 15%;
-    right: 22%;
-}
-
-.player-position.position-11 {
-    bottom: 15%;
-    left: 22%;
-}
+    .card-placeholder.small {
+        max-width: 55px;
+    }
 }
 
 @media (max-width: 1200px) {
-.poker-table {
-padding-bottom: 62%;
-border-width: 1.6%;
-}
+    .poker-table {
+        padding-bottom: 68%;
+        border-width: 1.6%;
+    }
 
-.player-position {
-    width: 14%;
-    padding-bottom: 12%;
-}
+    .player-position {
+        width: 18%;
+        padding-bottom: 18%;
+    }
 
-.community-area {
-    width: 40%;
-}
+    .community-area {
+        width: 38%;
+    }
 
-.card {
-    max-width: calc(8vw + 13px);
-    max-height: calc((8vw + 13px) * var(--card-aspect-ratio));
-}
+    .card {
+        max-width: 65px;
+    }
 
-.card.small {
-    max-width: calc(6.5vw + 10px);
-    max-height: calc((6.5vw + 10px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 50px;
+    }
 
-.card-placeholder {
-    max-width: calc(8vw + 13px);
-    max-height: calc((8vw + 13px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 65px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(6.5vw + 10px);
-    max-height: calc((6.5vw + 10px) * var(--card-aspect-ratio));
-}
-
+    .card-placeholder.small {
+        max-width: 50px;
+    }
 }
 
 @media (max-width: 992px) {
-.poker-table {
-padding-bottom: 65%;
-border-width: 1.4%;
-}
+    .poker-table {
+        padding-bottom: 70%;
+        border-width: 1.4%;
+    }
 
-.player-position {
-    width: 15%;
-    padding-bottom: 13%;
-    padding-top: 0.8%;
-}
+    .player-position {
+        width: 20%;
+        padding-bottom: 20%;
+        padding-top: 0.8%;
+    }
 
-.player-label {
-    font-size: clamp(9px, 0.9vw, 12px);
-}
+    .player-label {
+        font-size: clamp(9px, 0.9vw, 12px);
+    }
 
-.community-area {
-    width: 45%;
-    padding: 1% 1.5%;
-}
+    .community-area {
+        width: 42%;
+        padding: 1% 1.5%;
+    }
 
-.community-label {
-    font-size: clamp(7px, 1vw, 10px);
-}
+    .community-label {
+        font-size: clamp(7px, 1vw, 10px);
+    }
 
-.controls-section {
-    flex-direction: column;
-}
+    .controls-section {
+        flex-direction: column;
+    }
 
-.selection-header {
-    flex-direction: column;
-    align-items: flex-start;
-}
+    .selection-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.card {
-    max-width: calc(7vw + 11px);
-    max-height: calc((7vw + 11px) * var(--card-aspect-ratio));
-}
+    .card {
+        max-width: 60px;
+    }
 
-.card.small {
-    max-width: calc(5.5vw + 8px);
-    max-height: calc((5.5vw + 8px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 45px;
+    }
 
-.card-placeholder {
-    max-width: calc(7vw + 11px);
-    max-height: calc((7vw + 11px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 60px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(5.5vw + 8px);
-    max-height: calc((5.5vw + 8px) * var(--card-aspect-ratio));
-}
+    .card-placeholder.small {
+        max-width: 45px;
+    }
 
-.player-position.position-2 {
-    bottom: 18%;
-    right: 25%;
-}
+    /* Adjust positions slightly to prevent overlap */
+    .player-position.position-2 {
+        bottom: 15%;
+        right: 18%;
+    }
 
-.player-position.position-3 {
-    bottom: 32%;
-    right: 12%;
-}
+    .player-position.position-3 {
+        bottom: 32%;
+        right: 8%;
+    }
 
-.player-position.position-11 {
-    bottom: 18%;
-    left: 25%;
-}
+    .player-position.position-11 {
+        bottom: 15%;
+        left: 18%;
+    }
 
-.player-position.position-10 {
-    bottom: 32%;
-    left: 12%;
-}
-
-.poker-table.rectangular .player-position.position-4,
-.poker-table.rectangular .player-position.position-5,
-.poker-table.rectangular .player-position.position-10,
-.poker-table.rectangular .player-position.position-11 {
-    margin-top: 2%;
-}
-
+    .player-position.position-10 {
+        bottom: 32%;
+        left: 8%;
+    }
 }
 
 @media (max-width: 768px) {
-.poker-table {
-padding-bottom: 70%;
-border-width: 1.2%;
-}
+    .poker-table {
+        padding-bottom: 75%;
+        border-width: 1.2%;
+    }
 
-.player-position {
-    width: 16%;
-    padding-bottom: 13%;
-    padding-top: 0.6%;
-}
+    .player-position {
+        width: 22%;
+        padding-bottom: 22%;
+        padding-top: 0.6%;
+    }
 
-.community-area {
-    width: 50%;
-    padding: 0.8% 1.2%;
-}
+    .community-area {
+        width: 45%;
+        padding: 0.8% 1.2%;
+    }
 
-.community-label {
-    margin-bottom: 0.3em;
-}
+    .community-label {
+        margin-bottom: 0.3em;
+    }
 
-.card {
-    max-width: calc(6vw + 10px);
-    max-height: calc((6vw + 10px) * var(--card-aspect-ratio));
-}
+    .card {
+        max-width: 55px;
+    }
 
-.card.small {
-    max-width: calc(4.8vw + 8px);
-    max-height: calc((4.8vw + 8px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 40px;
+    }
 
-.card-placeholder {
-    max-width: calc(6vw + 10px);
-    max-height: calc((6vw + 10px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 55px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(4.8vw + 8px);
-    max-height: calc((4.8vw + 8px) * var(--card-aspect-ratio));
-}
+    .card-placeholder.small {
+        max-width: 40px;
+    }
 
-.logo {
-    font-size: 20px;
-}
+    .logo {
+        font-size: 20px;
+    }
 
-.btn {
-    padding: 8px 12px;
-    font-size: 14px;
-}
+    .btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 
-.casino-background {
-    padding: 15px;
-}
+    .casino-background {
+        padding: 15px;
+    }
 
-.player-position.position-2 {
-    bottom: 20%;
-    right: 26%;
-}
+    /* Further adjust player positions */
+    .player-position.position-2 {
+        bottom: 18%;
+        right: 20%;
+    }
 
-.player-position.position-11 {
-    bottom: 20%;
-    left: 26%;
-}
-
+    .player-position.position-11 {
+        bottom: 18%;
+        left: 20%;
+    }
 }
 
 @media (max-width: 576px) {
-.poker-table {
-padding-bottom: 75%;
-border-width: 1%;
-}
-.player-position {
-    width: 18%;
-    padding-bottom: 14%;
-    padding-top: 0.5%;
-}
+    .poker-table {
+        padding-bottom: 80%;
+        border-width: 1%;
+    }
+    
+    .player-position {
+        width: 24%;
+        padding-bottom: 24%;
+        padding-top: 0.5%;
+    }
 
-.player-label {
-    font-size: clamp(7px, 0.8vw, 10px);
-}
+    .player-label {
+        font-size: clamp(7px, 0.8vw, 10px);
+    }
 
-.community-area {
-    width: 55%;
-    padding: 0.6% 1%;
-}
+    .community-area {
+        width: 50%;
+        padding: 0.6% 1%;
+    }
 
-.community-label {
-    font-size: clamp(6px, 0.8vw, 9px);
-    margin-bottom: 0.2em;
-}
+    .community-label {
+        font-size: clamp(6px, 0.8vw, 9px);
+        margin-bottom: 0.2em;
+    }
 
-.card {
-    max-width: calc(5vw + 9px);
-    max-height: calc((5vw + 9px) * var(--card-aspect-ratio));
-}
+    .card {
+        max-width: 50px;
+    }
 
-.card.small {
-    max-width: calc(4vw + 7px);
-    max-height: calc((4vw + 7px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 38px;
+    }
 
-.card-placeholder {
-    max-width: calc(5vw + 9px);
-    max-height: calc((5vw + 9px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 50px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(4vw + 7px);
-    max-height: calc((4vw + 7px) * var(--card-aspect-ratio));
-}
+    .card-placeholder.small {
+        max-width: 38px;
+    }
 
-.header-controls {
-    display: none;
-}
+    .header-controls {
+        display: none;
+    }
 
-.modal-content {
-    margin: 5% auto;
-    width: 95%;
-}
+    .modal-content {
+        margin: 5% auto;
+        width: 95%;
+    }
 
-.poker-table.rectangular .player-position.position-4,
-.poker-table.rectangular .player-position.position-5,
-.poker-table.rectangular .player-position.position-10,
-.poker-table.rectangular .player-position.position-11 {
-    margin-top: 4%;
-}
-
-
+    /* Adjust rectangular table player positions */
+    .poker-table.rectangular .player-position.position-4,
+    .poker-table.rectangular .player-position.position-5,
+    .poker-table.rectangular .player-position.position-10,
+    .poker-table.rectangular .player-position.position-11 {
+        margin-top: 4%;
+    }
 }
 
 @media (max-width: 480px) {
-.poker-table {
-padding-bottom: 80%;
-border-width: 0.8%;
-}
+    .poker-table {
+        padding-bottom: 85%;
+        border-width: 0.8%;
+    }
 
-.player-position {
-    width: 20%;
-    padding-bottom: 15%;
-    padding-top: 0.3%;
-}
+    .player-position {
+        width: 26%;
+        padding-bottom: 26%;
+        padding-top: 0.3%;
+    }
 
-.community-area {
-    width: 60%;
-    padding: 0.5% 0.8%;
-}
+    .community-area {
+        width: 55%;
+        padding: 0.5% 0.8%;
+    }
 
-.card {
-    max-width: calc(4.5vw + 8px);
-    max-height: calc((4.5vw + 8px) * var(--card-aspect-ratio));
-}
+    .card {
+        max-width: 45px;
+    }
 
-.card.small {
-    max-width: calc(3.6vw + 6px);
-    max-height: calc((3.6vw + 6px) * var(--card-aspect-ratio));
-}
+    .card.small {
+        max-width: 35px;
+    }
 
-.card-placeholder {
-    max-width: calc(4.5vw + 8px);
-    max-height: calc((4.5vw + 8px) * var(--card-aspect-ratio));
-}
+    .card-placeholder {
+        max-width: 45px;
+    }
 
-.card-placeholder.small {
-    max-width: calc(3.6vw + 6px);
-    max-height: calc((3.6vw + 6px) * var(--card-aspect-ratio));
-}
+    .card-placeholder.small {
+        max-width: 35px;
+    }
 
-.player-position .player-label {
-    font-size: clamp(6px, 0.7vw, 9px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 90%;
-}
-
+    .player-position .player-label {
+        font-size: clamp(6px, 0.7vw, 9px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90%;
+    }
 }
