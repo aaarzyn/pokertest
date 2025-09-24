@@ -290,7 +290,7 @@ function renderPlayerPositions() {
         renderPlayerCards(youPlayer);
     }
     
-    // Then handle opponent players - limiting to playerCount
+    // Then handle opponent players - limiting to playerCount - 1 (since "YOU" is already displayed)
     const opponentPlayers = state.players.filter(p => p.id !== 0);
     const opponentsToRender = opponentPlayers.slice(0, state.playerCount - 1);
     
@@ -530,6 +530,10 @@ function renderPlayerPositions() {
             const newPosition = newId + 1;
             const newName = newId === 0 ? "YOU" : `Player ${newPosition}`;
             state.players.push(new Player(newId, newName, newPosition, true));
+        }
+
+        if (state.players.length > count) {
+            state.players = state.players.slice(0, count);
         }
         
         renderPlayerPositions();
