@@ -92,12 +92,12 @@ function createDeck() {
 // init players
 function initializePlayers(count) {
     // Create 'you' player
-    const you = new Player(0, "YOU", 0, true);
+    const you = new Player(0, "YOU", 1, true);
     
     // Create other players
     const players = [you];
     for (let i = 1; i < count - 1; i++) {
-        players.push(new Player(i, `Player ${i}`, i, true));
+        players.push(new Player(i, `Player ${i + 1}`, i + 1, true));
     }
     
     return players;
@@ -269,7 +269,7 @@ function renderPlayerPositions() {
     const youPlayer = state.players.find(p => p.id === 0);
     if (youPlayer) {
         const position = document.createElement('div');
-        position.className = `player-position position-0`;
+        position.className = `player-position position-1`;
         position.classList.add('you');
         
         if (!youPlayer.active) {
@@ -295,7 +295,7 @@ function renderPlayerPositions() {
     
     opponentsToRender.forEach((player, index) => {
         const position = document.createElement('div');
-        position.className = `player-position position-${index + 1}`;
+        position.className = `player-position position-${index + 2}`;
         
         if (!player.active) {
             position.classList.add('folded');
@@ -526,7 +526,9 @@ function renderPlayerPositions() {
         // check two player min
         while (state.players.length <= count) {
             const newId = state.players.length;
-            state.players.push(new Player(newId, `Player ${newId}`, newId, true));
+            const newPosition = newId + 1;
+            const newName = newId === 0 ? "YOU" : `Player ${newPosition}`;
+            state.players.push(new Player(newId, newName, newPosition, true));
         }
         
         renderPlayerPositions();
@@ -631,8 +633,11 @@ function renderPlayerPositions() {
     function savePlayerDetails() {
         const player = state.players[state.selectedPlayerId];
         if (!player) return;
-        
-        player.name = document.getElementById('playerName').value || `Player ${player.id}`;
+        if (player.id === 0) {
+            player.name = document.getElementById('playerName').value || "YOU";
+        } else {
+            player.name = document.getElementById('playerName').value || `Player ${player.id+1}`;
+        }
         player.active = document.querySelector('input[name="playerStatus"]:checked').value === 'active';
         player.cardsVisible = document.querySelector('input[name="cardVisibility"]:checked').value === 'visible';
         
