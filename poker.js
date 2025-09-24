@@ -155,6 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Always select "Your Hand" by default
         updateSelectedPlayerInfo(state.players[0]);
+
+        playerCount.value = state.playerCount;
+        playerCountValue.textContent = state.playerCount;
         
         // Event listeners
         calculateButton.addEventListener('click', calculateProbability);
