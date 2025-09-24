@@ -149,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function initialize() {
         preloadCardImages();
+        state.players = initializePlayers(state.playerCount); 
         renderPlayerPositions();
         renderCardDeck();
         renderCommunityCards();
