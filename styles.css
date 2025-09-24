@@ -118,17 +118,11 @@ header {
     border-radius: 100px;
 }
 
-/* ======= Player Positions ======= */
-.player-positions {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
+/* Player Positions */
 .player-position {
     position: absolute;
-    width: 150px;
-    height: 140px;
+    width: 140px; /* Slightly reduced width */
+    height: 130px; /* Slightly reduced height */
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: var(--border-radius);
     display: flex;
@@ -140,116 +134,106 @@ header {
     transition: all var(--transition-speed);
     cursor: pointer;
     overflow: hidden;
+    z-index: 2; /* Add z-index to manage stacking */
 }
 
-.player-position:hover {
-    transform: translateY(-5px);
-    background-color: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.player-position.you {
-    background-color: rgba(0, 79, 152, 0.5);
-    border: 2px solid var(--accent-gold);
-}
-
-.player-position.folded {
-    opacity: 0.5;
-    background-color: rgba(50, 50, 50, 0.5);
-}
-
-.player-position.folded::after {
-    content: 'FOLDED';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--danger-red);
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 5px 10px;
-    border-radius: 4px;
-    z-index: 2;
-}
-
-.player-label {
-    font-weight: 500;
-    color: var(--text-light);
-    text-shadow: 1px 1px 2px #000000;
-    margin-bottom: 5px;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.player-cards {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    min-height: 85px;
-}
-
-/* Player position placement */
-.player-position:nth-child(1) {
-    top: 10%;
+/* Player position placement - more spread out and uses percentages better */
+/* For a circular table */
+.player-position:nth-child(1) { /* Top center */
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
-.player-position:nth-child(2) {
-    top: 15%;
-    left: 20%;
+.player-position:nth-child(2) { /* Top right */
+    top: 5%;
+    right: 15%;
 }
-
-.player-position:nth-child(3) {
-    top: 30%;
-    left: 5%;
+.player-position:nth-child(3) { /* Right top */
+    top: 20%;
+    right: 3%;
 }
-
-.player-position:nth-child(4) {
+.player-position:nth-child(4) { /* Right middle */
     top: 50%;
-    left: 5%;
+    right: 0;
     transform: translateY(-50%);
 }
-
-.player-position:nth-child(5) {
-    bottom: 30%;
-    left: 5%;
+.player-position:nth-child(5) { /* Right bottom */
+    bottom: 20%;
+    right: 3%;
 }
-
-.player-position:nth-child(6) {
-    bottom: 15%;
-    left: 20%;
+.player-position:nth-child(6) { /* Bottom right */
+    bottom: 5%;
+    right: 15%;
 }
-
-.player-position:nth-child(7) {
-    bottom: 10%;
+.player-position:nth-child(7) { /* Bottom center */
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
-.player-position:nth-child(8) {
-    bottom: 15%;
-    right: 20%;
+.player-position:nth-child(8) { /* Bottom left */
+    bottom: 5%;
+    left: 15%;
 }
-
-.player-position:nth-child(9) {
-    bottom: 30%;
-    right: 5%;
+.player-position:nth-child(9) { /* Left bottom */
+    bottom: 20%;
+    left: 3%;
 }
-
-.player-position:nth-child(10) {
+.player-position:nth-child(10) { /* Left middle */
     top: 50%;
-    right: 5%;
+    left: 0;
     transform: translateY(-50%);
 }
+.player-position:nth-child(11) { /* Left top */
+    top: 20%;
+    left: 3%;
+}
 
-.player-position:nth-child(11) {
-    top: 30%;
+/* For rectangular table layout - add this to your CSS */
+.poker-table-rectangular .player-position:nth-child(1) {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.poker-table-rectangular .player-position:nth-child(2) {
+    top: 0;
+    right: 25%;
+}
+.poker-table-rectangular .player-position:nth-child(3) {
+    top: 0;
     right: 5%;
+}
+.poker-table-rectangular .player-position:nth-child(4) {
+    top: 35%;
+    right: 0;
+}
+.poker-table-rectangular .player-position:nth-child(5) {
+    bottom: 35%;
+    right: 0;
+}
+.poker-table-rectangular .player-position:nth-child(6) {
+    bottom: 0;
+    right: 5%;
+}
+.poker-table-rectangular .player-position:nth-child(7) {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.poker-table-rectangular .player-position:nth-child(8) {
+    bottom: 0;
+    left: 5%;
+}
+.poker-table-rectangular .player-position:nth-child(9) {
+    bottom: 35%;
+    left: 0;
+}
+.poker-table-rectangular .player-position:nth-child(10) {
+    top: 35%;
+    left: 0;
+}
+.poker-table-rectangular .player-position:nth-child(11) {
+    top: 0;
+    left: 5%;
 }
 
 /* ======= Community Cards ======= */
