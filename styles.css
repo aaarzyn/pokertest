@@ -86,49 +86,21 @@ header {
 .poker-table {
     background-color: var(--table-green);
     border-radius: 200px;
-    height: 600px;
+    height: 700px; /* Increased from 600px */
     position: relative;
     border: 20px solid var(--wood-brown);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
                 inset 0 0 80px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
-    max-width: 1100px;
+    max-width: 1300px; /* Increased from 1100px */
     overflow: hidden;
 }
 
-.poker-table::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 200px;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    z-index: 1;
-    pointer-events: none;
-}
-
-/* Rectangular table option */
-.poker-table.rectangular {
-    border-radius: 100px;
-}
-
-.poker-table.rectangular::before {
-    border-radius: 100px;
-}
-
-/* Player Positions */
-.player-positions {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
+/* Player Positions - Improved spacing */
 .player-position {
     position: absolute;
-    width: 120px; /* Reduced width */
-    height: 120px; /* Square dimensions for better space management */
+    width: 120px;
+    height: 120px;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: var(--border-radius);
     display: flex;
@@ -143,123 +115,123 @@ header {
     z-index: 2;
 }
 
-/* For circular table - positioning in a complete circle */
+/* For circular table - positioning in a complete circle with improved spacing */
 /* Position 1 is YOU at the bottom center */
 .player-position.position-1 {
-    bottom: 15px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* Positions 2-11 distributed evenly in a circle */
+/* Positions 2-11 distributed evenly in a circle with more spacing */
 .player-position.position-2 {
-    bottom: 15px;
-    right: 20%;
+    bottom: 25px;
+    right: 25%;
 }
 
 .player-position.position-3 {
-    bottom: 20%;
-    right: 5%;
+    bottom: 25%;
+    right: 8%;
 }
 
 .player-position.position-4 {
-    right: 5px;
-    bottom: 40%;
+    right: 15px;
+    bottom: 45%;
 }
 
 .player-position.position-5 {
-    right: 5px;
-    top: 40%;
+    right: 15px;
+    top: 45%;
 }
 
 .player-position.position-6 {
-    top: 20%;
-    right: 5%;
+    top: 25%;
+    right: 8%;
 }
 
 .player-position.position-7 {
-    top: 15px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .player-position.position-8 {
-    top: 20%;
-    left: 5%;
+    top: 25%;
+    left: 8%;
 }
 
 .player-position.position-9 {
-    left: 5px;
-    top: 40%;
+    left: 15px;
+    top: 45%;
 }
 
 .player-position.position-10 {
-    left: 5px;
-    bottom: 40%;
+    left: 15px;
+    bottom: 45%;
 }
 
 .player-position.position-11 {
-    bottom: 20%;
-    left: 5%;
+    bottom: 25%;
+    left: 8%;
 }
 
-/* For rectangular table - positioning on the perimeter */
+/* For rectangular table - positioning on the perimeter with improved spacing */
 .poker-table.rectangular .player-position.position-1 {
-    bottom: 15px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-2 {
-    bottom: 15px;
-    right: 15%;
+    bottom: 25px;
+    right: 18%;
 }
 
 .poker-table.rectangular .player-position.position-3 {
-    bottom: 15px;
-    right: 35%;
+    bottom: 25px;
+    right: 38%;
 }
 
 .poker-table.rectangular .player-position.position-4 {
-    right: 5px;
-    bottom: 30%;
+    right: 15px;
+    bottom: 35%;
 }
 
 .poker-table.rectangular .player-position.position-5 {
-    right: 5px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
 }
 
 .poker-table.rectangular .player-position.position-6 {
-    right: 5px;
-    top: 30%;
+    right: 15px;
+    top: 35%;
 }
 
 .poker-table.rectangular .player-position.position-7 {
-    top: 15px;
-    right: 35%;
+    top: 25px;
+    right: 38%;
 }
 
 .poker-table.rectangular .player-position.position-8 {
-    top: 15px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-9 {
-    top: 15px;
-    left: 35%;
+    top: 25px;
+    left: 38%;
 }
 
 .poker-table.rectangular .player-position.position-10 {
-    left: 5px;
-    top: 30%;
+    left: 15px;
+    top: 35%;
 }
 
 .poker-table.rectangular .player-position.position-11 {
-    left: 5px;
-    bottom: 30%;
+    left: 15px;
+    bottom: 35%;
 }
 /* ======= Community Cards ======= */
 .community-area {
@@ -289,37 +261,6 @@ header {
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
-}
-
-/* ======= Pot Display ======= */
-.pot-display {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.pot-chips {
-    width: 50px;
-    height: 50px;
-    background-image: radial-gradient(circle, var(--accent-gold), #8b7513);
-    border-radius: 50%;
-    border: 3px solid #000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pot-label {
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--text-light);
-    margin-top: 5px;
-    text-shadow: 1px 1px 2px #000000;
 }
 
 /* ======= Card Styling ======= */
