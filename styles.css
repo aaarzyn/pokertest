@@ -18,6 +18,7 @@
     --danger-red: #f44336;
     --border-radius: 8px;
     --transition-speed: 0.3s;
+    --card-aspect-ratio: 1.39; /* 304px / 219px = 1.39 */
 }
 
 * {
@@ -85,7 +86,7 @@ header {
 
 .poker-table {
     background-color: var(--table-green);
-    border-radius: 200px;
+    border-radius: 50%;
     height: 0;
     padding-bottom: 58%; /* Maintain aspect ratio */
     position: relative;
@@ -100,11 +101,11 @@ header {
 .poker-table::before {
     content: '';
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 200px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
     background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     z-index: 1;
     pointer-events: none;
@@ -153,7 +154,7 @@ header {
     font-weight: 500;
 }
 
-/* For circular table - positioning with percentages */
+/* Improved circular positioning for players */
 /* Position 1 is YOU at the bottom center */
 .player-position.position-1 {
     bottom: 5%;
@@ -161,32 +162,30 @@ header {
     transform: translateX(-50%);
 }
 
-/* Positions 2-11 distributed with percentages */
+/* Positions 2-11 distributed in a circle */
 .player-position.position-2 {
-    bottom: 8%;
-    right: 25%;
+    bottom: 15%;
+    right: 20%;
 }
 
 .player-position.position-3 {
-    bottom: 25%;
-    right: 8%;
+    bottom: 30%;
+    right: 10%;
 }
 
 .player-position.position-4 {
-    right: 3%;
-    bottom: 50%;
-    transform: translateY(50%);
+    right: 5%;
+    bottom: 45%;
 }
 
 .player-position.position-5 {
-    right: 3%;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 5%;
+    top: 45%;
 }
 
 .player-position.position-6 {
-    top: 25%;
-    right: 8%; 
+    top: 30%;
+    right: 10%;
 }
 
 .player-position.position-7 {
@@ -196,25 +195,23 @@ header {
 }
 
 .player-position.position-8 {
-    top: 25%;
-    left: 8%;
+    top: 30%;
+    left: 10%;
 }
 
 .player-position.position-9 {
-    left: 3%;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 5%;
+    top: 45%;
 }
 
 .player-position.position-10 {
-    left: 3%;
-    bottom: 50%;
-    transform: translateY(50%);
+    left: 5%;
+    bottom: 45%;
 }
 
 .player-position.position-11 {
-    bottom: 25%;
-    left: 8%;
+    bottom: 30%;
+    left: 10%;
 }
 
 /* For rectangular table - using percentages */
@@ -281,12 +278,13 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40%;
+    width: 35%;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: var(--border-radius);
     padding: 1.5% 2%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 2;
 }
 
 .community-label {
@@ -307,19 +305,23 @@ header {
 
 /* ======= Card Styling ======= */
 .card {
-    width: calc(3.5vw + 15px);
-    height: calc(4.9vw + 21px);
+    width: 219px;
+    height: 304px;
     position: relative;
     display: inline-block;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
     overflow: hidden;
     border-radius: 5px;
     background-color: transparent;
+    max-width: calc(12vw + 15px); /* Responsive max-width */
+    max-height: calc((12vw + 15px) * var(--card-aspect-ratio)); /* Maintain aspect ratio */
 }
 
 .card.small {
-    width: calc(2.8vw + 12px);
-    height: calc(3.92vw + 16.8px);
+    width: 175px;
+    height: 243px;
+    max-width: calc(9vw + 12px);
+    max-height: calc((9vw + 12px) * var(--card-aspect-ratio));
 }
 
 .card-img {
@@ -366,8 +368,10 @@ header {
 }
 
 .card-placeholder {
-    width: calc(3.5vw + 15px);
-    height: calc(4.9vw + 21px);
+    width: 219px;
+    height: 304px;
+    max-width: calc(12vw + 15px);
+    max-height: calc((12vw + 15px) * var(--card-aspect-ratio));
     border: 2px dashed rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     display: inline-flex;
@@ -376,11 +380,14 @@ header {
     margin: 0.2%;
     color: rgba(255, 255, 255, 0.5);
     font-size: clamp(14px, 1.5vw, 24px);
+    transition: all var(--transition-speed);
 }
 
 .card-placeholder.small {
-    width: calc(2.8vw + 12px);
-    height: calc(3.92vw + 16.8px);
+    width: 175px;
+    height: 243px;
+    max-width: calc(9vw + 12px);
+    max-height: calc((9vw + 12px) * var(--card-aspect-ratio));
     font-size: clamp(10px, 1.2vw, 18px);
 }
 
@@ -1013,6 +1020,38 @@ body.light-theme .rank-desc {
     .community-area {
         width: 35%;
     }
+    
+    /* Card size adjustments */
+    .card {
+        max-width: calc(10vw + 15px);
+        max-height: calc((10vw + 15px) * var(--car -aspect-ratio));
+    }
+    
+    .card.small {
+        max-width: calc(8vw + 12px);
+        max-height: calc((8vw + 12px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder {
+        max-width: calc(10vw + 15px);
+        max-height: calc((10vw + 15px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder.small {
+        max-width: calc(8vw + 12px);
+        max-height: calc((8vw + 12px) * var(--card-aspect-ratio));
+    }
+    
+    /* Adjusted player positions */
+    .player-position.position-2 {
+        bottom: 15%;
+        right: 22%;
+    }
+    
+    .player-position.position-11 {
+        bottom: 15%;
+        left: 22%;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1027,27 +1066,28 @@ body.light-theme .rank-desc {
     }
     
     .community-area {
-        width: 30%;
+        width: 40%;
     }
     
+    /* Card size adjustments */
     .card {
-        width: calc(3.2vw + 13px);
-        height: calc(4.48vw + 18.2px);
+        max-width: calc(8vw + 13px);
+        max-height: calc((8vw + 13px) * var(--card-aspect-ratio));
     }
     
     .card.small {
-        width: calc(2. 5vw + 10px);
-        height: calc(3.5vw + 14px);
+        max-width: calc(6.5vw + 10px);
+        max-height: calc((6.5vw + 10px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder {
-        width: calc(3.2vw + 13px);
-        height: calc(4.48vw + 18.2px);
+        max-width: calc(8vw + 13px);
+        max-height: calc((8vw + 13px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder.small {
-        width: calc(2.5vw + 10px);
-        height: calc(3.5vw + 14px);
+        max-width: calc(6.5vw + 10px);
+        max-height: calc((6.5vw + 10px) * var(--card-aspect-ratio));
     }
 }
 
@@ -1068,7 +1108,7 @@ body.light-theme .rank-desc {
     }
     
     .community-area {
-        width: 28%;
+        width: 45%;
         padding: 1% 1.5%;
     }
     
@@ -1083,6 +1123,48 @@ body.light-theme .rank-desc {
     .selection-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+    
+    /* Card size adjustments */
+    .card {
+        max-width: calc(7vw + 11px);
+        max-height: calc((7vw + 11px) * var(--card-aspect-ratio));
+    }
+    
+    .card.small {
+        max-width: calc(5.5vw + 8px);
+        max-height: calc((5.5vw + 8px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder {
+        max-width: calc(7vw + 11px);
+        max-height: calc((7vw + 11px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder.small {
+        max-width: calc(5.5vw + 8px);
+        max-height: calc((5.5vw + 8px) * var(--card-aspect-ratio));
+    }
+    
+    /* Adjusted player positions */
+    .player-position.position-2 {
+        bottom: 18%;
+        right: 25%;
+    }
+    
+    .player-position.position-3 {
+        bottom: 32%;
+        right: 12%;
+    }
+    
+    .player-position.position-11 {
+        bottom: 18%;
+        left: 25%;
+    }
+    
+    .player-position.position-10 {
+        bottom: 32%;
+        left: 12%;
     }
     
     /* Further space out the positions on sides */
@@ -1107,7 +1189,7 @@ body.light-theme .rank-desc {
     }
     
     .community-area {
-        width: 25%;
+        width: 50%;
         padding: 0.8% 1.2%;
     }
     
@@ -1115,24 +1197,25 @@ body.light-theme .rank-desc {
         margin-bottom: 0.3em;
     }
     
+    /* Card size adjustments */
     .card {
-        width: calc(2.8vw + 11px);
-        height: calc(3.92vw + 15.4px);
+        max-width: calc(6vw + 10px);
+        max-height: calc((6vw + 10px) * var(--card-aspect-ratio));
     }
     
     .card.small {
-        width: calc(2.2vw + 8px);
-        height: calc(3.08vw + 11.2px);
+        max-width: calc(4.8vw + 8px);
+        max-height: calc((4.8vw + 8px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder {
-        width: calc(2.8vw + 11px);
-        height: calc(3.92vw + 15.4px);
+        max-width: calc(6vw + 10px);
+        max-height: calc((6vw + 10px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder.small {
-        width: calc(2.2vw + 8px);
-        height: calc(3.08vw + 11.2px);
+        max-width: calc(4.8vw + 8px);
+        max-height: calc((4.8vw + 8px) * var(--card-aspect-ratio));
     }
     
     .logo {
@@ -1146,6 +1229,17 @@ body.light-theme .rank-desc {
     
     .casino-background {
         padding: 15px;
+    }
+    
+    /* Adjusted player positions */
+    .player-position.position-2 {
+        bottom: 20%;
+        right: 26%;
+    }
+    
+    .player-position.position-11 {
+        bottom: 20%;
+        left: 26%;
     }
 }
 
@@ -1166,7 +1260,7 @@ body.light-theme .rank-desc {
     }
     
     .community-area {
-        width: 22%;
+        width: 55%;
         padding: 0.6% 1%;
     }
     
@@ -1175,24 +1269,25 @@ body.light-theme .rank-desc {
         margin-bottom: 0.2em;
     }
     
+    /* Card size adjustments */
     .card {
-        width: calc(2.5vw + 9px);
-        height: calc(3.5vw + 12.6px);
+        max-width: calc(5vw + 9px);
+        max-height: calc((5vw + 9px) * var(--card-aspect-ratio));
     }
     
     .card.small {
-        width: calc(2vw + 7px);
-        height: calc(2.8vw + 9.8px);
+        max-width: calc(4vw + 7px);
+        max-height: calc((4vw + 7px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder {
-        width: calc(2.5vw + 9px);
-        height: calc(3.5vw + 12.6px);
+        max-width: calc(5vw + 9px);
+        max-height: calc((5vw + 9px) * var(--card-aspect-ratio));
     }
     
     .card-placeholder.small {
-        width: calc(2vw + 7px);
-        height: calc(2.8vw + 9.8px);
+        max-width: calc(4vw + 7px);
+        max-height: calc((4vw + 7px) * var(--card-aspect-ratio));
     }
     
     .header-controls {
@@ -1226,8 +1321,29 @@ body.light-theme .rank-desc {
     }
     
     .community-area {
-        width: 20%;
+        width: 60%;
         padding: 0.5% 0.8%;
+    }
+    
+    /* Card size adjustments */
+    .card {
+        max-width: calc(4.5vw + 8px);
+        max-height: calc((4.5vw + 8px) * var(--card-aspect-ratio));
+    }
+    
+    .card.small {
+        max-width: calc(3.6vw + 6px);
+        max-height: calc((3.6vw + 6px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder {
+        max-width: calc(4.5vw + 8px);
+        max-height: calc((4.5vw + 8px) * var(--card-aspect-ratio));
+    }
+    
+    .card-placeholder.small {
+        max-width: calc(3.6vw + 6px);
+        max-height: calc((3.6vw + 6px) * var(--card-aspect-ratio));
     }
     
     /* Hide player labels on extremely small screens */
