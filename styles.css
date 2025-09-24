@@ -25,6 +25,13 @@
     --container-padding: 30px;
     --button-hover-brightness: 1.2;
     --header-height: 70px;
+    
+    /* Card dimensions - based on your 219x304 cards */
+    --card-width: 110px;  /* Scaled down for UI */
+    --card-height: 152px; /* Maintaining aspect ratio */
+    --card-small-width: 80px;
+    --card-small-height: 111px;
+    --card-radius: 8px;
 }
 
 /* Light Theme Variables */
@@ -178,7 +185,8 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    width: 140px;
+    width: 180px; /* Increased width for your card size */
+    z-index: 5;
 }
 
 .player-position:hover {
@@ -208,7 +216,7 @@ header {
     max-width: 100%;
 }
 
-/* Position specific locations */
+/* Position specific locations - adjusted to prevent overlap */
 .position-1 {
     bottom: 5%;
     left: 50%;
@@ -216,12 +224,12 @@ header {
 }
 
 .position-2 {
-    bottom: 20%;
+    bottom: 25%;
     left: 15%;
 }
 
 .position-3 {
-    bottom: 35%;
+    bottom: 45%;
     left: 5%;
 }
 
@@ -252,12 +260,12 @@ header {
 }
 
 .position-9 {
-    bottom: 35%;
+    bottom: 45%;
     right: 5%;
 }
 
 .position-10 {
-    bottom: 20%;
+    bottom: 25%;
     right: 15%;
 }
 
@@ -503,8 +511,7 @@ header {
 }
 
 .toggle-switch input:checked + .slider:before {
-    transform: translateX(24px);
-}
+    transform: translateX(24px); }
 
 /* Card Tabs */
 .card-tabs {
@@ -521,7 +528,7 @@ header {
     cursor: pointer;
     font-size: 14px;
     display: flex;
-    align-items: center ;
+    align-items: center;
     gap: 5px;
     transition: all 0.3s;
 }
@@ -553,7 +560,7 @@ header {
 
 /* Card Deck */
 .card-deck-container {
-    max-height: 300px;
+    max-height: 350px; /* Increased height for larger cards */
     overflow-y: auto;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.3);
@@ -578,18 +585,18 @@ header {
 
 .card-deck {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+    gap: 15px;
     justify-content: center;
 }
 
-/* CARDS */
+/* CARDS - Adjusted for your card size */
 .card {
     position: relative;
-    width: 80px;
-    height: 112px;
+    width: var(--card-width);
+    height: var(--card-height);
     background-color: var(--card-white);
-    border-radius: 8px;
+    border-radius: var(--card-radius);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
@@ -606,9 +613,9 @@ header {
 }
 
 .card.small {
-    width: 60px;
-    height: 84px;
-    border-radius: 6px;
+    width: var(--card-small-width);
+    height: var(--card-small-height);
+    border-radius: calc(var(--card-radius) - 2px);
 }
 
 .card-img {
@@ -636,14 +643,14 @@ header {
 }
 
 .card-placeholder {
-    width: 80px;
-    height: 112px;
+    width: var(--card-width);
+    height: var(--card-height);
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: var(--card-radius);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 30px;
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s;
@@ -654,9 +661,9 @@ header {
 }
 
 .card-placeholder.small {
-    width: 60px;
-    height: 84px;
-    font-size: 18px;
+    width: var(--card-small-width);
+    height: var(--card-small-height);
+    font-size: 24px;
 }
 
 /* BUTTONS */
@@ -934,9 +941,9 @@ header {
 
 .modal-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-small-width), 1fr));
     gap: 10px;
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: auto;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
@@ -992,34 +999,60 @@ header {
     margin-top: 15px;
 }
 
+/* Fix for Font Awesome card icons */
+.fa-heart, .fa-diamond, .fa-club, .fa-spade {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+    text-rendering: auto;
+}
+
+.fa-heart:before {
+    content: "♥";
+    color: var(--red-suit);
+}
+
+.fa-diamond:before {
+    content: "♦";
+    color: var(--red-suit);
+}
+
+.fa-club:before {
+    content: "♣";
+}
+
+.fa-spade:before {
+    content: "♠";
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 1200px) {
+    :root {
+        --card-width: 90px;
+        --card-height: 125px;
+        --card-small-width: 70px;
+        --card-small-height: 97px;
+    }
+    
     .poker-table {
         height: 500px;
     }
     
-    .card {
-        width: 70px;
-        height: 98px;
-    }
-    
-    .card.small {
-        width: 50px;
-        height: 70px;
-    }
-    
-    .card-placeholder {
-        width: 70px;
-        height: 98px;
-    }
-    
-    .card-placeholder.small {
-        width: 50px;
-        height: 70px;
+    .player-position {
+        width: 150px;
     }
 }
 
 @media (max-width: 992px) {
+    :root {
+        --card-width: 80px;
+        --card-height: 111px;
+        --card-small-width: 60px;
+        --card-small-height: 83px;
+    }
+    
     .poker-table {
         height: 450px;
     }
@@ -1043,14 +1076,25 @@ header {
     .player-count-container, .action-buttons {
         width: 100%;
     }
+    
+    .player-position {
+        width: 130px;
+    }
 }
 
 @media (max-width: 768px) {
+    :root {
+        --card-width: 70px;
+        --card-height: 97px;
+        --card-small-width: 50px;
+        --card-small-height: 69px;
+    }
+    
     .poker-table {
         height: 400px;
     }
     
-    .header {
+    header {
         flex-direction: column;
         gap: 15px;
         text-align: center;
@@ -1061,34 +1105,26 @@ header {
     }
     
     .card-deck {
-        grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(var(--car -width), 1fr));
+    }
+    
+    .player-position {
+        width: 120px;
+        padding: 7px;
     }
 }
 
 @media (max-width: 576px) {
+    :root {
+        --card-width: 60px;
+        --card-height: 83px;
+        --card-small-width: 45px;
+        --card-small-height: 62px;
+    }
+    
     .poker-table {
         height: 350px;
         border-width: 10px;
-    }
-    
-    .card {
-        width: 60px;
-        height: 84px;
-    }
-    
-    .card.small {
-        width: 40px;
-        height: 56px;
-    }
-    
-    .card-placeholder {
-        width: 60px;
-        height: 84px;
-    }
-    
-    .card-placeholder.small {
-        width: 40px;
-        height: 56px;
     }
     
     .player-position {
