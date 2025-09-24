@@ -596,6 +596,14 @@ header {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+.player-cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px; /* Small gap between cards */
+    width: 100%;
+}
+
 .slider::-moz-range-thumb {
     width: 18px;
     height: 18px;
