@@ -305,22 +305,19 @@ header {
 
 /* ======= Card Styling ======= */
 .card {
-    width: 219px;
-    height: 304px;
+    width: 100%;
+    height: auto;
+    max-width: 219px;
+    aspect-ratio: var(--card-aspect-ratio);
     position: relative;
     display: inline-block;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
     border-radius: 5px;
     background-color: transparent;
-    max-width: 45%
-    max-height: calc(45% * var(--card-aspect-ratio));
 }
 
 .card.small {
     width: 175px;
-    height: 243px;
-    max-width: 45%;
-    max-height: calc(45% * var(--card-aspect-ratio));
 }
 
 .card-img {
@@ -1023,7 +1020,6 @@ padding-bottom: 60%;
 
 .card {
     max-width: calc(10vw + 15px);
-    max-height: calc((10vw + 15px) * var(--card-aspect-ratio));
 }
 
 .card.small {
