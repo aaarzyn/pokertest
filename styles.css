@@ -86,21 +86,49 @@ header {
 .poker-table {
     background-color: var(--table-green);
     border-radius: 200px;
-    height: 700px; /* Increased from 600px */
+    height: 700px; /* Increased height */
     position: relative;
     border: 20px solid var(--wood-brown);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
                 inset 0 0 80px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
-    max-width: 1300px; /* Increased from 1100px */
+    max-width: 1200px; /* Increased width */
     overflow: hidden;
 }
 
-/* Player Positions - Improved spacing */
+.poker-table::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 200px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Rectangular table option */
+.poker-table.rectangular {
+    border-radius: 100px;
+}
+
+.poker-table.rectangular::before {
+    border-radius: 100px;
+}
+
+/* Player Positions */
+.player-positions {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .player-position {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 110px; /* Slightly smaller */
+    height: 110px;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: var(--border-radius);
     display: flex;
@@ -115,122 +143,126 @@ header {
     z-index: 2;
 }
 
-/* For circular table - positioning in a complete circle with improved spacing */
+/* For circular table - positioning with much more spacing */
 /* Position 1 is YOU at the bottom center */
 .player-position.position-1 {
-    bottom: 25px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* Positions 2-11 distributed evenly in a circle with more spacing */
+/* Positions 2-11 distributed with wider spacing */
 .player-position.position-2 {
-    bottom: 25px;
+    bottom: 40px;
     right: 25%;
 }
 
 .player-position.position-3 {
     bottom: 25%;
-    right: 8%;
+    right: 10%;
 }
 
 .player-position.position-4 {
-    right: 15px;
-    bottom: 45%;
+    right: 20px;
+    bottom: 50%;
+    transform: translateY(50%);
 }
 
 .player-position.position-5 {
-    right: 15px;
-    top: 45%;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .player-position.position-6 {
     top: 25%;
-    right: 8%;
+    right: 10%; 
 }
 
 .player-position.position-7 {
-    top: 25px;
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .player-position.position-8 {
     top: 25%;
-    left: 8%;
+    left: 10%;
 }
 
 .player-position.position-9 {
-    left: 15px;
-    top: 45%;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .player-position.position-10 {
-    left: 15px;
-    bottom: 45%;
+    left: 20px;
+    bottom: 50%;
+    transform: translateY(50%);
 }
 
 .player-position.position-11 {
     bottom: 25%;
-    left: 8%;
+    left: 10%;
 }
 
-/* For rectangular table - positioning on the perimeter with improved spacing */
+/* For rectangular table - spacing positions better */
 .poker-table.rectangular .player-position.position-1 {
-    bottom: 25px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-2 {
-    bottom: 25px;
-    right: 18%;
+    bottom: 30px;
+    right: 20%;
 }
 
 .poker-table.rectangular .player-position.position-3 {
-    bottom: 25px;
-    right: 38%;
+    bottom: 30px;
+    right: 40%;
 }
 
 .poker-table.rectangular .player-position.position-4 {
-    right: 15px;
+    right: 20px;
     bottom: 35%;
 }
 
 .poker-table.rectangular .player-position.position-5 {
-    right: 15px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
 }
 
 .poker-table.rectangular .player-position.position-6 {
-    right: 15px;
+    right: 20px;
     top: 35%;
 }
 
 .poker-table.rectangular .player-position.position-7 {
-    top: 25px;
-    right: 38%;
+    top: 30px;
+    right: 40%;
 }
 
 .poker-table.rectangular .player-position.position-8 {
-    top: 25px;
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .poker-table.rectangular .player-position.position-9 {
-    top: 25px;
-    left: 38%;
+    top: 30px;
+    left: 40%;
 }
 
 .poker-table.rectangular .player-position.position-10 {
-    left: 15px;
+    left: 20px;
     top: 35%;
 }
 
 .poker-table.rectangular .player-position.position-11 {
-    left: 15px;
+    left: 20px;
     bottom: 35%;
 }
 /* ======= Community Cards ======= */
