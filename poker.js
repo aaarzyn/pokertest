@@ -96,7 +96,7 @@ function initializePlayers(count) {
     
     // Create other players
     const players = [you];
-    for (let i = 1; i < count; i++) {
+    for (let i = 1; i < count - 1; i++) {
         players.push(new Player(i, `Player ${i}`, i, true));
     }
     
