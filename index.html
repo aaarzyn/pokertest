@@ -3,53 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Probability Calculator</title>
+    <title>Poker Probability Calculator</title>    
+    <link rel = "stylesheet" href = "styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="main-container">
         <header>
-            <div class="logo">
-                <i class="fas fa-crown"></i> POKER ODDS MASTER
+            <div class = "logo">
+                <i class = "fas fa-crown"></i> POKER ODDS CALCULATOR
             </div>
-            <div class="header-controls">
-                <button id="infoButton" class="btn info-btn"><i class="fas fa-info-circle"></i> Help</button>
-                <button id="toggleThemeButton" class="btn theme-btn"><i class="fas fa-moon"></i> Dark</button>
+            <div class = "header-controls">
+                <button id = "infoButton" class="btn info-btn"><i class = "fas fa-info-circle"></i> Help</button>
+                <button id="toggleThemeButton" class="btn theme-btn"><i class = "fas fa-moon"></i> Dark</button>
             </div>
         </header>
-        
         <div class="casino-background">
             <div class="poker-table-container">
                 <!-- Poker Table -->
                 <div class="poker-table">
                     <!-- Player positions around the table -->
                     <div class="player-positions">
-                        <!-- Players will be dynamically generated -->
+                     <!-- Players will be dynamically generated -->
                     </div>
                     
                     <!-- Community Cards in the center -->
                     <div class="community-area">
                         <div class="community-label">Community Cards</div>
-                        <div class="community-cards" id="communityCards"></div>
+                     <div class="community-cards" id="communityCards"></div>
                     </div>
                     
-                </div>
+              </div>
                 
-                <!-- Controls -->
+             <!-- Controls -->
                 <div class="controls-section">
                     <div class="player-count-container">
                         <label for="playerCount">Players: <span id="playerCountValue">2</span></label>
-                        <input type="range" id="playerCount" min="2" max="11" value="2" class="slider">
-                        <button id="layoutButton" class="btn layout-btn"><i class="fas fa-table"></i> Layout</button>
-                    </div>
-                    
+                     <input type="range" id="playerCount" min="2" max="11" value="2" class="slider">
+                     <button id="layoutButton" class="btn layout-btn"><i class="fas fa-table"></i> Layout</button>
+                   </div>
+                  
                     <div class="action-buttons">
                         <button id="calculateButton" class="btn calculate-btn" disabled><i class="fas fa-calculator"></i> Calculate Odds</button>
-                        <button id="resetButton" class="btn reset-btn"><i class="fas fa-redo-alt"></i> Reset Cards</button>
+                     <button id="resetButton" class="btn reset-btn"><i class="fas fa-redo-alt"></i> Reset Cards</button>
                     </div>
-                </div>
+              </div>
                 
                 <!-- Results Display -->
                 <div class="results-section" id="results">
@@ -59,22 +59,20 @@
                     <p>Select your cards and the community cards to calculate your odds.</p>
                 </div>
             </div>
-            
-            <!-- Card Selection Area -->
-            <div class="card-selection-area">
-                <div class="selection-header">
-                    <div class="selected-player-info">
-                        <span class="selected-player-name">Your Hand</span>
-                        <div class="player-status-controls">
+        <div class="card-selection-area"> 
+            <div class="selection-header">
+                <div class="selected-player-info">
+                    <span class="selected-player-name">Your Hand</span>
+                      <div class="player-status-controls">
                             <label class="toggle-switch">
                                 <input type="checkbox" id="playerActiveToggle" checked>
-                                <span class="slider round"></span>
-                            </label>
+                            <span class="slider round"></span>
+                          </label>
                             <span class="status-label active">Active</span>
-                        </div>
+                       </div>
                     </div>
                     <div class="card-tabs">
-                        <button class="tab-btn active" data-suit="all"><i class="fas fa-th"></i> All</button>
+                      <button class="tab-btn active" data-suit="all"><i class="fas fa-th"></i> All</button>
                         <button class="tab-btn hearts" data-suit="H"><i class="fas fa-heart"></i> Hearts</button>
                         <button class="tab-btn diamonds" data-suit="D"><i class="fas fa-diamond"></i> Diamonds</button>
                         <button class="tab-btn clubs" data-suit="C"><i class="fas fa-club"></i> Clubs</button>
@@ -82,40 +80,40 @@
                     </div>
                 </div>
                 <div class="card-deck-container">
-                    <div class="card-deck" id="cardDeck"></div>
-                </div>
+
+            <div class="card-deck" id="cardDeck"></div>
             </div>
         </div>
-        
-        <!-- Player Edit Modal -->
-        <div id="playerEditModal" class="modal">
+    </div>
+
+    <div id="playerEditModal" class="modal">
             <div class="modal-content">
-                <div class="modal-header">
+              <div class="modal-header">
                     <h2>Edit Player</h2>
-                    <span class="close-modal">&times;</span>
-                </div>
+                <span class="close-modal">&times;</span>
+               </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="playerName">Player Name:</label>
+                      <label for="playerName">Player Name:</label>
                         <input type="text" id="playerName" class="form-control">
                     </div>
-                    <div class="form-group">
+                  <div class="form-group">
                         <label>Player Status:</label>
                         <div class="status-options">
                             <label class="radio-container">
-                                <input type="radio" name="playerStatus" value="active" checked>
-                                <span class="checkmark"></span>
+                               <input type="radio" name="playerStatus" value="active" checked>
+                         <span class="checkmark"></span>
                                 Active
                             </label>
                             <label class="radio-container">
                                 <input type="radio" name="playerStatus" value="folded">
-                                <span class="checkmark"></span>
+                               <span class="checkmark"></span>
                                 Folded
                             </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Card Visibility:</label>
+                     <label>Card Visibility:</label>
                         <div class="status-options">
                             <label class="radio-container">
                                 <input type="radio" name="cardVisibility" value="hidden" checked>
@@ -127,10 +125,10 @@
                                 <span class="checkmark"></span>
                                 Visible
                             </label>
-                        </div>
+                     </div>
                     </div>
                     <div class="form-group">
-                        <label>Player Cards:</label>
+                   <label>Player Cards:</label>
                         <div id="modalCardSelection" class="modal-card-selection"></div>
                     </div>
                 </div>
@@ -139,30 +137,29 @@
                     <button class="btn cancel-btn close-modal">Cancel</button>
                 </div>
             </div>
-        </div>
-        
-        <!-- Help Modal -->
+       </div>
+
         <div id="helpModal" class="modal">
             <div class="modal-content help-content">
                 <div class="modal-header">
                     <h2>How to Use Poker Odds Master</h2>
-                    <span class="close-modal">&times;</span>
+                   <span class="close-modal">&times;</span>
                 </div>
-                <div class="modal-body">
+             <div class="modal-body">
                     <div class="help-section">
                         <h3>Basic Usage</h3>
                         <p>1. Select cards for your hand by clicking on them in the card deck below.</p>
                         <p>2. Add community cards by selecting them after your hand is complete.</p>
-                        <p>3. Click "Calculate Odds" to see your probability of winning.</p>
+                     <p>3. Click "Calculate Odds" to see your probability of winning.</p>
                     </div>
                     <div class="help-section">
                         <h3>Adding Opponent Cards</h3>
                         <p>1. Click on any player position on the table.</p>
-                        <p>2. Enter their name and select their cards.</p>
+                       <p>2. Enter their name and select their cards.</p>
                         <p>3. Mark them as active or folded.</p>
-                        <p>4. Choose whether their cards are visible or hidden.</p>
-                    </div>
-                    <div class="help-section">
+                      <p>4. Choose whether their cards are visible or hidden.</p>
+                  </div>
+                 <div class="help-section">
                         <h3>Hand Rankings</h3>
                         <div class="hand-rankings">
                             <div class="hand-rank">
@@ -170,14 +167,14 @@
                                 <span class="rank-desc">A, K, Q, J, 10 of the same suit</span>
                             </div>
                             <div class="hand-rank">
-                                <span class="rank-name">Straight Flush</span>
+                               <span class="rank-name">Straight Flush</span>
                                 <span class="rank-desc">Five consecutive cards of the same suit</span>
                             </div>
                             <div class="hand-rank">
                                 <span class="rank-name">Four of a Kind</span>
                                 <span class="rank-desc">Four cards of the same rank</span>
-                            </div>
-                            <div class="hand-rank">
+                           </div>
+                          <div class="hand-rank">
                                 <span class="rank-name">Full House</span>
                                 <span class="rank-desc">Three of a kind plus a pair</span>
                             </div>
@@ -186,35 +183,36 @@
                                 <span class="rank-desc">Five cards of the same suit</span>
                             </div>
                             <div class="hand-rank">
-                                <span class="rank-name">Straight</span>
+                             <span class="rank-name">Straight</span>
                                 <span class="rank-desc">Five consecutive cards</span>
                             </div>
-                            <div class="hand-rank">
-                                <span class="rank-name">Three of a Kind</span>
-                                <span class="rank-desc">Three cards of the same rank</span>
+                           <div class="hand-rank">
+                             <span class="rank-name">Three of a Kind</span>
+                            <span class="rank-desc">Three cards of the same rank</span>
                             </div>
                             <div class="hand-rank">
-                                <span class="rank-name">Two Pair</span>
+                              <span class="rank-name">Two Pair</span>
                                 <span class="rank-desc">Two different pairs</span>
                             </div>
                             <div class="hand-rank">
                                 <span class="rank-name">One Pair</span>
-                                <span class="rank-desc">Two cards of the same rank</span>
-                            </div>
+                             <span class="rank-desc">Two cards of the same rank</span>
+                           </div>
                             <div class="hand-rank">
-                                <span class="rank-name">High Card</span>
+                             <span class="rank-name">High Card</span>
                                 <span class="rank-desc">Highest card in your hand</span>
                             </div>
                         </div>
-                    </div>
-                </div>
+              </div>
+               </div>
                 <div class="modal-footer">
                     <button class="btn close-btn close-modal">Close</button>
-                </div>
-            </div>
+              </div>
+           </div>
         </div>
     </div>
 
-    <script src="poker.js"></script>
+    <script src="poker.js"></script> 
+    
 </body>
 </html>
