@@ -291,7 +291,7 @@ function renderPlayerPositions() {
     
     // Then handle opponent players - limiting to playerCount
     const opponentPlayers = state.players.filter(p => p.id !== 0);
-    const opponentsToRender = opponentPlayers.slice(0, state.playerCount);
+    const opponentsToRender = opponentPlayers.slice(0, state.playerCount - 1);
     
     opponentsToRender.forEach((player, index) => {
         const position = document.createElement('div');
@@ -675,7 +675,7 @@ function renderPlayerPositions() {
             }
             
         
-            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.position <= state.playerCount));
+            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.position <= state.playerCount - 1));
             
             if (activePlayers.length < 2) {
                 throw new Error("You need at least 2 active players.");
