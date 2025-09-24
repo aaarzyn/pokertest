@@ -938,43 +938,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Calculate win probability
-    function calculateWinProbability(myCards, communityCards, activePlayers) {
-        const allCards = [...myCards, ...communityCards];
-        const myBestHand = findBestFive(allCards);
-        const myScore = handEvaluator(myBestHand);
-        
-        // Get all used cards
-        const usedCards = [];
-        activePlayers.forEach(player => {
-            if (player.cards.length === 2) {
-                usedCards.push(...player.cards);
-            }
-        });
-        usedCards.push(...communityCards);
-        
-        // For known opponent hands, directly compare
-        const knownOpponents = activePlayers.filter(p => p.id !== 0 && p.cards.length === 2);
-        const unknownOpponentCount = activePlayers.length - knownOpponents.length - 1; // -1 for self
-        
-        let winAgainstKnown = true;
-        for (let opponent of knownOpponents) {
-            const opponentCards = [...opponent.cards, ...communityCards];
-            const opponentBestHand = findBestFive(opponentCards);
-            const opponentScore = handEvaluator(opponentBestHand);
-            
-            if (compareScores(myScore, opponentScore) < 0) {
-                winAgainstKnown = false;
-                break;
-            }
-        }
-        
-        // If we lose against a known opponent, probability is 0
-        if (!winAgainstKnown) return 0;
-        
-        // For unknown opponents, use the hand strength to estimate probability
-        const handStrength = Math.min(0.95, (myScore[0] + 1) / 10); // Scale from 0.1 to 0.95
-        
-        // Adjust for number of unknown opponents
-        return Math.pow(handStrength, unknownOpponentCount);
+    // Calculate win probability using exact calculations
+function calculateWinProbability(myCards, communityCards, activePlayers) {
+    // Check if we have the right number of cards
+    if (myCards.length !== 2) {
+        throw new Error("You need exactly two cards in your hand");
     }
+    
+    if (communityCards.length !== 5) {
+        throw new Error("All 5 community cards must be known in current functionality");
+    }
+    
+    // Find my best hand with the community cards
+    const myBestHand = findBestFive([...myCards, ...communityCards]);
+    const myScore = handEvaluator(myBestHand);
+    
+    // Create full deck and remove known cards
+    const fullDeck = createDeck();
+    const knownCards = [...myCards, ...communityCards];
+    
+    // Filter out known cards from the deck
+    const remainingDeck = fullDeck.filter(card => 
+        !knownCards.some(known => known.rank === card.rank && known.suit === card.suit)
+    );
+    
+    // Calculate total number of possible opponent hands
+    const oppHandsCount = combination(remainingDeck.length, 2);
+    
+    let wins = 0;
+    let ties = 0;
+    
+    // Check my hand against all possible opponent hands
+    const oppHandCombinations = getCombinations(remainingDeck, 2);
+    
+    for (let oppCards of oppHandCombinations) {
+        const oppBestHand = findBestFive([...oppCards, ...communityCards]);
+        const oppScore = handEvaluator(oppBestHand);
+        const comparison = compareScores(myScore, oppScore);
+        
+        if (comparison > 0) { // Win
+            wins++;
+        } else if (comparison === 0) { // Tie
+            ties++;
+        }
+    }
+    
+    // Calculate chance against one opponent
+    const winProbability = (wins + ties/2) / oppHandsCount;
+    
+    // Calculate chance against multiple opponents
+    const activeOpponentsCount = activePlayers.length - 1; // Subtract self
+    return Math.pow(winProbability, activeOpponentsCount);
+}
+
+// Combination formula: n choose k
+function combination(n, k) {
+    if (k > n) return 0;
+    if (k === 0 || k === n) return 1;
+    
+    let result = 1;
+    for (let i = 1; i <= k; i++) {
+        result *= (n - (k - i));
+        result /= i;
+    }
+    return result;
+}
 });
