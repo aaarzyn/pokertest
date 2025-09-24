@@ -34,32 +34,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Fallback card back (if image fails to load) */
-.fallback-card-back {
-    background-color: #1c4671;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.1) 10px, rgba(0, 0, 0, 0.1) 20px);
-}
-
-.fallback-card-back::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background-image: radial-gradient(circle, var(--accent-gold), #8b7513);
-    border-radius: 50%;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-}
-
-.card-back img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
 .main-container {
     max-width: 1500px;
     margin: 0 auto;
@@ -135,6 +109,15 @@ header {
     pointer-events: none;
 }
 
+/* Rectangular table option */
+.poker-table.rectangular {
+    border-radius: 100px;
+}
+
+.poker-table.rectangular::before {
+    border-radius: 100px;
+}
+
 /* ======= Player Positions ======= */
 .player-positions {
     position: absolute;
@@ -171,7 +154,7 @@ header {
 }
 
 .player-position.folded {
-    opacity : 0.5;
+    opacity: 0.5;
     background-color: rgba(50, 50, 50, 0.5);
 }
 
@@ -334,19 +317,24 @@ header {
 .card {
     width: 60px;
     height: 84px;
-    background-color: var(--card-white);
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     position: relative;
     display: inline-block;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
     overflow: hidden;
+    border-radius: 5px;
+    background-color: transparent;
 }
 
 .card.small {
     width: 45px;
     height: 63px;
-    font-size: 80%;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .card.selected {
@@ -359,12 +347,13 @@ header {
     cursor: pointer;
 }
 
-.card-back {
-    background-color: var(--card-back);
+/* Fallback card back (if image fails to load) */
+.fallback-card-back {
+    background-color: #1c4671;
     background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.1) 10px, rgba(0, 0, 0, 0.1) 20px);
 }
 
-.card-back::after {
+.fallback-card-back::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -375,6 +364,13 @@ header {
     background-image: radial-gradient(circle, var(--accent-gold), #8b7513);
     border-radius: 50%;
     border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .card-placeholder {
@@ -513,12 +509,13 @@ header {
 
 .tab-btn {
     padding: 8px 15px;
+    margin: 0 5px 5px 0;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 20px;
     color: var(--text-light);
     cursor: pointer;
-    transition: all var(--transition-speed);
+    transition: background-color 0.3s;
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -727,7 +724,8 @@ header {
     margin-top: 10px;
 }
 
-/* Special Styling for Royal Flush */ .royal-flush {
+/* Special Styling for Royal Flush */
+.royal-flush {
     color: var(--accent-gold);
     text-shadow: 0 0 10px var(--accent-gold);
     font-weight: bold;
@@ -858,6 +856,22 @@ header {
     margin-top: 10px;
 }
 
+.modal-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.mt-3 {
+    margin-top: 15px;
+}
+
 .save-btn {
     background-color: var(--success-green);
     color: white;
@@ -927,6 +941,64 @@ header {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* Light Theme */
+body.light-theme {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+body.light-theme .casino-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                      url('https://images.unsplash.com/photo-1601370690183-1c7b180b8987?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FzaW5vfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=60');
+}
+
+body.light-theme .logo,
+body.light-theme .results-header,
+body.light-theme .selected-player-name,
+body.light-theme .community-label,
+body.light-theme .modal-header h2,
+body.light-theme .help-section h3,
+body.light-theme .rank-name {
+    color: #8b5a2b;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .card-selection-area,
+body.light-theme .controls-section,
+body.light-theme .results-section,
+body.light-theme .modal-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .card-deck-container,
+body.light-theme .result-details,
+body.light-theme .modal-card-grid,
+body.light-theme .hand-rank {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .tab-btn {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+body.light-theme .tab-btn.active {
+    background-color: #8b5a2b;
+    color: white;
+}
+
+body.light-theme .card-placeholder {
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+body.light-theme .results-section p,
+body.light-theme .form-group label,
+body.light-theme .rank-desc {
+    color: #333;
+}
+
 /* ======= Responsive Design ======= */
 @media (max-width: 1200px) {
     .poker-table {
@@ -964,8 +1036,7 @@ header {
     }
     
     .selection-header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; align-items: flex-start;
     }
 }
 
