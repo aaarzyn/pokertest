@@ -681,7 +681,7 @@ function renderPlayerPositions() {
             }
             
         
-            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.position <= state.playerCount));
+            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.id <= state.playerCount));
             
             if (activePlayers.length < 2) {
                 throw new Error("You need at least 2 active players.");
