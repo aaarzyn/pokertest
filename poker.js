@@ -92,7 +92,7 @@ function createDeck() {
 // init players
 function initializePlayers(count) {
     // Create 'you' player
-    const you = new Player(0, "YOU", 10, true);
+    const you = new Player(0, "YOU", 0, true);
     
     // Create other players
     const players = [you];
@@ -261,45 +261,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // pos render
-    function renderPlayerPositions() {
-        const positionsContainer = document.querySelector('.player-positions');
-        positionsContainer.innerHTML = '';
+function renderPlayerPositions() {
+    const positionsContainer = document.querySelector('.player-positions');
+    positionsContainer.innerHTML = '';
+    
+    // First handle the "YOU" player separately
+    const youPlayer = state.players.find(p => p.id === 0);
+    if (youPlayer) {
+        const position = document.createElement('div');
+        position.className = `player-position position-0`;
+        position.classList.add('you');
         
-        state.players.forEach(player => {
-            if (player.position <= state.playerCount || player.id === 0) {
-                const position = document.createElement('div');
-                position.className = `player-position position-${player.position}`;
-                
-                if (player.id === 0) {
-                    position.classList.add('you');
-                }
-                
-                if (!player.active) {
-                    position.classList.add('folded');
-                }
-                
-                position.innerHTML = `
-                    <div class="player-label">${player.name}</div>
-                    <div class="player-cards" id="player${player.id}Cards"></div>
-                `;
-                
-                position.addEventListener('click', () => {
-                    // check selected
-                    updateSelectedPlayerInfo(player);
-                    
-                    // edit modal
-                    if (player.id !== 0) {
-                        openPlayerEditModal(player);
-                    }
-                });
-                
-                positionsContainer.appendChild(position);
-                
-                // card render
-                renderPlayerCards(player);
+        if (!youPlayer.active) {
+            position.classList.add('folded');
+        }
+        
+        position.innerHTML = `
+            <div class="player-label">${youPlayer.name}</div>
+            <div class="player-cards" id="player${youPlayer.id}Cards"></div>
+        `;
+        
+        position.addEventListener('click', () => {
+            updateSelectedPlayerInfo(youPlayer);
+        });
+        
+        positionsContainer.appendChild(position);
+        renderPlayerCards(youPlayer);
+    }
+    
+    // Then handle opponent players - limiting to playerCount
+    const opponentPlayers = state.players.filter(p => p.id !== 0);
+    const opponentsToRender = opponentPlayers.slice(0, state.playerCount);
+    
+    opponentsToRender.forEach((player, index) => {
+        const position = document.createElement('div');
+        position.className = `player-position position-${index + 1}`;
+        
+        if (!player.active) {
+            position.classList.add('folded');
+        }
+        
+        position.innerHTML = `
+            <div class="player-label">${player.name}</div>
+            <div class="player-cards" id="player${player.id}Cards"></div>
+        `;
+        
+        position.addEventListener('click', () => {
+            updateSelectedPlayerInfo(player);
+            
+            if (player.id !== 0) {
+                openPlayerEditModal(player);
             }
         });
-    }
+        
+        positionsContainer.appendChild(position);
+        renderPlayerCards(player);
+    });
+}
+
     
     // player render
     function renderPlayerCards(player) {
@@ -656,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
         
-            const activePlayers = state.players.filter(p => p.active && p.position <= state.playerCount);
+            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.position <= state.playerCount));
             
             if (activePlayers.length < 2) {
                 throw new Error("You need at least 2 active players.");
