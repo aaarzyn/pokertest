@@ -91,18 +91,19 @@ function createDeck() {
 
 // init players
 function initializePlayers(count) {
-    // Create 'you' player
-    const you = new Player(0, "YOU", 1, true);
+    // Create players array with exact count
+    const players = [];
+    
+    // Create 'you' player (always first)
+    players.push(new Player(0, "YOU", 1, true));
     
     // Create other players
-    const players = [you];
     for (let i = 1; i < count; i++) {
         players.push(new Player(i, `Player ${i + 1}`, i + 1, true));
     }
     
     return players;
 }
-
 // init images of cards
 function preloadCardImages() {
     // Regular cards
@@ -266,8 +267,11 @@ function renderPlayerPositions() {
     const positionsContainer = document.querySelector('.player-positions');
     positionsContainer.innerHTML = '';
     
+    // Ensure we're only working with players within the player count
+    const validPlayers = state.players.slice(0, state.playerCount);
+    
     // First handle the "YOU" player separately
-    const youPlayer = state.players.find(p => p.id === 0);
+    const youPlayer = validPlayers.find(p => p.id === 0);
     if (youPlayer) {
         const position = document.createElement('div');
         position.className = `player-position position-1`;
@@ -290,11 +294,10 @@ function renderPlayerPositions() {
         renderPlayerCards(youPlayer);
     }
     
-    // Then handle opponent players - limiting to playerCount - 1 (since "YOU" is already displayed)
-    const opponentPlayers = state.players.filter(p => p.id !== 0);
-    const opponentsToRender = opponentPlayers.slice(0, state.playerCount - 1);
+    // Then handle opponent players
+    const opponentPlayers = validPlayers.filter(p => p.id !== 0);
     
-    opponentsToRender.forEach((player, index) => {
+    opponentPlayers.forEach((player, index) => {
         const position = document.createElement('div');
         position.className = `player-position position-${index + 2}`;
         
@@ -521,24 +524,29 @@ function renderPlayerPositions() {
     }
     
     // player count update
-    function updatePlayerCount(count) {
-        state.playerCount = count;
-        
-        // check two player min
-        while (state.players.length <= count) {
-            const newId = state.players.length;
-            const newPosition = newId + 1;
-            const newName = newId === 0 ? "YOU" : `Player ${newPosition}`;
-            state.players.push(new Player(newId, newName, newPosition, true));
-        }
-
-        if (state.players.length > count) {
-            state.players = state.players.slice(0, count);
-        }
-        
-        renderPlayerPositions();
-        updateCalculateButton();
+ function updatePlayerCount(count) {
+    // Store the old player count
+    const oldCount = state.playerCount;
+    
+    // Update state
+    state.playerCount = count;
+    
+    // If we're reducing player count, preserve existing players but trim the array
+    if (count < oldCount && state.players.length > count) {
+        state.players = state.players.slice(0, count);
     }
+    
+    // If we're increasing player count, add new players
+    while (state.players.length < count) {
+        const newId = state.players.length;
+        const newPosition = newId + 1;
+        const newName = newId === 0 ? "YOU" : `Player ${newPosition}`;
+        state.players.push(new Player(newId, newName, newPosition, true));
+    }
+    
+    renderPlayerPositions();
+    updateCalculateButton();
+}
     
     //button calc
     function updateCalculateButton() {
@@ -685,7 +693,7 @@ function renderPlayerPositions() {
             }
             
         
-            const activePlayers = state.players.filter(p => p.active && (p.id === 0 || p.position <= state.playerCount));
+            const activePlayers = state.players.filter(p => p.active && p.id < state.playerCount);
             
             if (activePlayers.length < 2) {
                 throw new Error("You need at least 2 active players.");
