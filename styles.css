@@ -33,11 +33,11 @@
     --table-border-width: 2.5vh;
     
     /* Card dimensions - based on table size */
-    --card-width: calc(var(--table-height) * 0.13);
+    --card-width: calc(var(--table-height) * 0.10);
     --card-height: calc(var(--card-width) * 1.4);
-    --card-small-width: calc(var(--table-height) * 0.08);
+    --card-small-width: calc(var(--table-height) * 0.06);
     --card-small-height: calc(var(--card-small-width) * 1.4);
-    --card-radius: 8px;
+    --card-radius: 6px;
 }
 
 /* Light Theme Variables */
@@ -1288,7 +1288,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 24px; /* Reduced font size */
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s;
@@ -1306,7 +1306,7 @@ header {
 .card-placeholder.small {
     width: var(--card-small-width);
     height: var(--card-small-height);
-    font-size: 24px;
+    font-size: 18px; /* Reduced font size */
 }
 
 /* BUTTONS */
@@ -1669,11 +1669,11 @@ header {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
-    padding: 10px;
+    padding: 8px; /* Reduced padding */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    width: calc(var(--card-small-width) * 2 + 25px);
+    width: calc(var(--card-small-width) * 2 + 20px); /* Adjusted width */
     z-index: 5;
     backdrop-filter: blur(3px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1855,7 +1855,7 @@ header {
 
 .community-cards {
     display: flex;
-    gap: calc(var(--table-height) * 0.02);
+    gap: calc(var(--table-height) * 0.015); /* Reduced gap */
     flex-wrap: nowrap;
     justify-content: center;
 }
