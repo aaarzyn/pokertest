@@ -1217,7 +1217,7 @@ header {
     position: relative;
     width: var(--card-width);
     height: var(--card-height);
-    background-color: transparent;
+    background-color: var(--card-white);
     border-radius: var(--card-radius);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -1231,10 +1231,10 @@ header {
     box-sizing: border-box;
 }
 
-.card:hover {
-    transform: var(--card-hover-transform);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    z-index: 10;
+.card.small {
+    width: var(--card-small-width);
+    height: var(--card-small-height);
+    border-radius: calc(var(--card-radius) - 2px);
 }
 
 .card.small {
@@ -1250,8 +1250,8 @@ header {
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
 }
+
 
 .card.selected {
     border: 2px solid var(--accent-gold);
