@@ -280,8 +280,8 @@ header {
 /* Position specific locations - calculated for both circular and rectangular tables */
 /* Circular table positions - Adjusted to prevent overlap */
 .poker-table:not(.poker-table-rectangular) .position-1 {
-    bottom: 1%;
-    left: 50%;
+    bottom: 5%;
+    left: 33%;
     transform: translateX(-50%);
 }
 
