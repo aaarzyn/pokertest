@@ -254,13 +254,13 @@ header {
 
 /* might need to go one by one */
 .poker-table:not(.poker-table-rectangular) .position-1 {
-    bottom: 5%;
-    left: 33%;
+    bottom: 8%;
+    left: 29%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-2 {
-    bottom: 15%;
-    left: 15%;
+    bottom: 18%;
+    left: 14%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-3 {
@@ -300,14 +300,21 @@ header {
 }
 
 .poker-table:not(.poker-table-rectangular) .position-10 {
- bottom: 15%;
-    right: 15%;
+ bottom: 18%;
+    right: 14%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-11 {
-    bottom: 5%;
-    right: 33%;
+    bottom: 8%;
+    right: 29%;
 }
+
+.poker-table:not(.poker-table-rectangular) .position-12 {
+    bottom: 1%;
+    right: 50%;
+    transform: translateX(-50%);
+}
+
 
 .poker-table-rectangular .position-1 {
     bottom: 5%;
@@ -366,6 +373,11 @@ header {
 .poker-table-rectangular .position-11 {
     bottom: 5%;
     right: 5%;
+}
+
+.poker-table-rectangular .position-12 {
+    bottom: 5%;
+    right: 25%;
 }
 
 .community-area {
@@ -1343,7 +1355,6 @@ body.light-theme .card.selected {
 .card:hover {
     transform: var(--card-hover-transform) rotate(2deg);
 }
-
 
 .dealer-cat-position {
     position: absolute;
