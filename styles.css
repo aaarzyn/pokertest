@@ -278,38 +278,38 @@ header {
     top: 8%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-6 {
+.poker-table:not(.poker-table-rectangular) .position-dealer {
     top: 1%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.poker-table:not(.poker-table-rectangular) .position-7 {
+.poker-table:not(.poker-table-rectangular) .position-6 {
     right: 29%;
     top: 8%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-8 {
+.poker-table:not(.poker-table-rectangular) .position-7 {
     right: 14%;
     top: 18%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-9 {
+.poker-table:not(.poker-table-rectangular) .position-8 {
     bottom: 40%;
     right: 2%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-10 {
+.poker-table:not(.poker-table-rectangular) .position-9 {
  bottom: 18%;
     right: 14%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-11 {
+.poker-table:not(.poker-table-rectangular) .position-10 {
     bottom: 8%;
     right: 29%;
 }
 
-.poker-table:not(.poker-table-rectangular) .position-12 {
+.poker-table:not(.poker-table-rectangular) .position-11 {
     bottom: 1%;
     right: 50%;
     transform: translateX(-50%);
@@ -348,34 +348,34 @@ header {
     left: 25%;
 }
 
-.poker-table-rectangular .position-7 {
+.poker-table-rectangular .position-dealer {
     top: 5%;
     left: 50%;
  transform: translateX(-50%);
 }
 
-.poker-table-rectangular .position-8 {
+.poker-table-rectangular .position-7 {
     top: 5%;
     right: 25%;
 }
 
-.poker-table-rectangular .position-9 {
+.poker-table-rectangular .position-8 {
     top: 5%;
     right: 5%;
 }
 
-.poker-table-rectangular .position-10 {
+.poker-table-rectangular .position-9 {
     right: 1%;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.poker-table-rectangular .position-11 {
+.poker-table-rectangular .position-10 {
     bottom: 5%;
     right: 5%;
 }
 
-.poker-table-rectangular .position-12 {
+.poker-table-rectangular .position-11 {
     bottom: 5%;
     right: 25%;
 }
