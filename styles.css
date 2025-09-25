@@ -30,7 +30,7 @@
     /* Table dimensions */
     --table-height: 60vh;
     --table-max-width: 90%;
-    --table-border-width: 2.5vh;
+    --table-border-width: 1.25vh;
     
     /* Card dimensions - based on table size */
     --card-width: calc(var(--table-height) * 0.10);
@@ -295,12 +295,12 @@ header {
 }
 
 .poker-table:not(.poker-table-rectangular) .position-4 {
-    left: 10%;
+    left: 14%;
     top: 15%; 
 }
 
 .poker-table:not(.poker-table-rectangular) .position-5 {
-    left: 25%;
+    left: 27%;
     top: 5%;
 }
 
@@ -311,13 +311,13 @@ header {
 }
 
 .poker-table:not(.poker-table-rectangular) .position-7 {
-    right: 25%;
+    right: 27%;
     top: 5%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-8 {
-    right: 10%;
-    top: 15%; /* Adjusted from 25% to prevent overlap */
+    right: 14%;
+    top: 15%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-9 {
