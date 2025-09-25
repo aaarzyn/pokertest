@@ -22,9 +22,6 @@ const HAND_TYPES = ["High Card", "One Pair", "Two Pair", "Three of a Kind",
     "Straight Flush", "Royal Flush"
 ];
 
-
-
-
 // card 
 class Card {
     constructor(rank, suit) {
@@ -87,7 +84,8 @@ const state = {
     activeSuit: 'all',
     selectedPlayerId: 0, // 0 is you
     playerCount: 2,
-    layoutType: 'circle'
+    layoutType: 'circle',
+    dealerPosition: 1
 };
 
 // make deck
@@ -121,16 +119,16 @@ function preloadCardImages() {
     for (let suit of SUITS) {
         for (let rank of RANKS) {
             const img = new Image();
-            img.src = `Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
+            img.src = `cards/Suit=${SUIT_NAMES[suit]}, Number=${RANK_NAMES[rank]}.png`;
         }
     }
     
     // Special cards
     const backImg = new Image();
-    backImg.src = 'Suit=Other, Number=Back Blue.png';
+    backImg.src = 'cards/Suit=Other, Number=Back Blue.png';
     
     const jokerImg = new Image();
-    jokerImg.src = 'Suit=Other, Number=Joker.png';
+    jokerImg.src = 'cards/Suit=Other, Number=Joker.png';
 }
 
 
@@ -165,6 +163,16 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPlayerPositions();
         renderCardDeck();
         renderCommunityCards();
+        renderDealerButton();
+
+        const toggleDealerButton = document.createElement('button');
+    toggleDealerButton.id = 'toggleDealerButton';
+    toggleDealerButton.className = 'btn theme-btn';
+    toggleDealerButton.innerHTML = '<i class="fas fa-user-tie"></i> Dealer';
+    toggleDealerButton.addEventListener('click', toggleDealer);
+    
+    document.querySelector('.header-controls').appendChild(toggleDealerButton);
+    
         
         // my hand default
         updateSelectedPlayerInfo(state.players[0]);
@@ -371,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.className = `card card-back${small ? ' small' : ''}`;
         
         const imgElement = document.createElement('img');
-        imgElement.src = 'Suit=Other, Number=Back Blue.png';
+        imgElement.src = 'cards/Suit=Other, Number=Back Blue.png';
         imgElement.alt = 'Card Back';
         imgElement.className = 'card-img';
         // backup
@@ -451,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // make elem
         const imgElement = document.createElement('img');
-      imgElement.src = `Suit=${suitName}, Number=${rankName}.png`;
+      imgElement.src = `cards/Suit=${suitName}, Number=${rankName}.png`;
         imgElement.alt = `${card.rank}${card.suit}`;
         imgElement.className = 'card-img';
         
@@ -684,12 +692,15 @@ else {
     
     // layout toggle
     function toggleLayout() {
-        state.layoutType = state.layoutType === 'circle' ? 'rectangle' : 'circle';
-        document.querySelector('.poker-table').classList.toggle('poker-table-rectangular');
-        layoutButton.innerHTML = state.layoutType === 'circle' 
-         ? '<i class="fas fa-table"></i> Layout'
-            : '<i class="fas fa-circle"></i> Layout';
-    }
+    state.layoutType = state.layoutType === 'circle' ? 'rectangle' : 'circle';
+    document.querySelector('.poker-table').classList.toggle('poker-table-rectangular');
+    layoutButton.innerHTML = state.layoutType === 'circle' 
+        ? '<i class="fas fa-table"></i> Layout'
+        : '<i class="fas fa-circle"></i> Layout';
+    
+    // Update dealer button position
+    renderDealerButton();
+}
    
 
 // probability stuff
@@ -1044,3 +1055,93 @@ function combination(n, k) {
 
 
 });
+
+function renderDealerButton() {
+    // Remove existing dealer button if any
+    const existingButton = document.querySelector('.dealer-button');
+    if (existingButton) {
+        existingButton.remove();
+    }
+    
+    const tableElement = document.querySelector('.poker-table');
+    const dealerButton = document.createElement('div');
+    dealerButton.className = 'dealer-button';
+    
+    // Create an image element for the partying cat GIF
+    const catImg = document.createElement('img');
+    catImg.src = 'https://media.giphy.com/media/BzyTuYCmvSORqs1ABM/giphy.gif'; // Party cat GIF
+    catImg.alt = 'Dealer';
+    
+    // Add a label
+    const dealerLabel = document.createElement('div');
+    dealerLabel.className = 'dealer-label';
+    dealerLabel.textContent = 'DEALER';
+    
+    // Add elements
+    dealerButton.appendChild(catImg);
+    dealerButton.appendChild(dealerLabel);
+    
+    // Position the dealer button relative to the selected position
+    positionDealerButton(dealerButton);
+    
+    // Add click functionality to move the dealer
+    dealerButton.addEventListener('click', moveDealerButton);
+    
+    tableElement.appendChild(dealerButton);
+}
+
+function positionDealerButton(buttonElement) {
+    const isRectangular = state.layoutType === 'rectangle';
+    let posX, posY;
+    
+    // Calculate position based on table type and dealer position
+    if (isRectangular) {
+        // Positions for rectangular table
+        switch(state.dealerPosition % 12) {
+            case 1: posX = '50%'; posY = '85%'; break; // Bottom middle
+            case 2: posX = '25%'; posY = '85%'; break; // Bottom left
+            case 3: posX = '5%'; posY = '85%'; break; // Bottom far left
+            case 4: posX = '1%'; posY = '50%'; break; // Left middle
+            case 5: posX = '5%'; posY = '15%'; break; // Top left
+            case 6: posX = '25%'; posY = '15%'; break; // Top middle-left
+            case 7: posX = '50%'; posY = '15%'; break; // Top middle
+            case 8: posX = '75%'; posY = '15%'; break; // Top middle-right
+            case 9: posX = '95%'; posY = '15%'; break; // Top right
+            case 10: posX = '99%'; posY = '50%'; break; // Right middle
+            case 11: posX = '95%'; posY = '85%'; break; // Bottom right
+            case 0: posX = '75%'; posY = '85%'; break; // Bottom middle-right
+        }
+    } else {
+        // Positions for circular table - using trigonometry
+        const radius = 42; // % from center
+        const angle = (state.dealerPosition % 12) * (360 / 12) * (Math.PI / 180);
+        const centerX = 50;
+        const centerY = 50;
+        
+        posX = centerX + radius * Math.sin(angle) + '%';
+        posY = centerY - radius * Math.cos(angle) + '%';
+    }
+    
+    buttonElement.style.left = posX;
+    buttonElement.style.top = posY;
+    
+    // If it's using percentages, handle transform for centering
+    if (typeof posX === 'string' && posX.includes('%')) {
+        buttonElement.style.transform = 'translate(-50%, -50%)';
+    }
+}
+
+function moveDealerButton() {
+    state.dealerPosition = (state.dealerPosition % 12) + 1;
+    renderDealerButton();
+}
+
+function toggleDealer() {
+    const dealerButton = document.querySelector('.dealer-button');
+    if (dealerButton) {
+        dealerButton.remove();
+    } else {
+        renderDealerButton();
+    }
+}
+
