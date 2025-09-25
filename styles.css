@@ -296,7 +296,7 @@ header {
 
 .poker-table:not(.poker-table-rectangular) .position-4 {
     left: 14%;
-    top: 15%; 
+    top: 18%; 
 }
 
 .poker-table:not(.poker-table-rectangular) .position-5 {
@@ -317,7 +317,7 @@ header {
 
 .poker-table:not(.poker-table-rectangular) .position-8 {
     right: 14%;
-    top: 15%;
+    top: 18%;
 }
 
 .poker-table:not(.poker-table-rectangular) .position-9 {
