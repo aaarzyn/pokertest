@@ -410,14 +410,14 @@ header {
     max-width: 600px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .community-label {
     font-size: 14px;
     color: var(--text-light);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     font-weight: 500;
 }
