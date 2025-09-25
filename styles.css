@@ -1,4 +1,4 @@
-.root {
+:root {
     --table-green: #35654d;
     --table-border: #2a3f33;
     --wood-brown: #8b5a2b;
@@ -148,12 +148,12 @@ header {
 .poker-table::before {
     content: '';
     position: absolute;
-    top: -10px; 
-    left: -10px;
-    right: -10px; 
-    bottom: -10px;
+    top: 0; 
+    left: 0;
+    right: 0; 
+    bottom: 0;
     border-radius: inherit;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, .02), rgba(255, 255, 255, .02) 20px);
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, .02) 10px, rgba(255, 255, 255, .02) 20px);
     z-index: 1;
     pointer-events: none;
     box-shadow: inset 0 0 50px rgba(0, 0, 0, .5);
@@ -1201,21 +1201,21 @@ img.card-img {
 }
 
 .fa-heart:before {
-    content: "";
+    content: "♥";
     color: var(--red-suit);
 }
 
 .fa-diamond:before {
-    content: "";
+    content: "♦";
     color: var(--red-suit);
 }
 
 .fa-club:before {
-    content: "";
+    content: "♣";
 }
 
 .fa-spade:before {
-    content: "";
+    content: "♠";
 }
 
 /* RESPONSIVE DESIGN */
