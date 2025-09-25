@@ -297,7 +297,7 @@ header {
 
 .poker-table:not(.poker-table-rectangular) .position-4 {
     left: 10%;
-    top: 15%; /* Adjusted from 25% to prevent overlap */
+    top: 15%; 
 }
 
 .poker-table:not(.poker-table-rectangular) .position-5 {
@@ -336,7 +336,6 @@ header {
     right: 33%;
 }
 
-/* Rectangular table positions - Adjusted for better spacing */
 .poker-table-rectangular .position-1 {
     bottom: 5%;
     left: 50%;
@@ -746,7 +745,7 @@ header {
     justify-content: center;
 }
 
-/* CARDS - Adjusted for your card size */
+/* CARDS */
 .card {
     position: relative;
     width: var(--card-width);
@@ -763,7 +762,6 @@ header {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    /* Force size control */
     max-width: var(--card-width);
     max-height: var(--card-height);
 }
@@ -818,7 +816,7 @@ img.card-img {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px; /* Reduced font size */
+    font-size: 24px;
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s;
@@ -836,7 +834,7 @@ img.card-img {
 .card-placeholder.small {
     width: var(--card-small-width);
     height: var(--card-small-height);
-    font-size: 18px; /* Reduced font size */
+    font-size: 18px; 
 }
 
 /* BUTTONS */
@@ -1234,7 +1232,6 @@ img.card-img {
     margin-top: 15px;
 }
 
-/* Fix for Font Awesome card icons */
 .fa-heart, .fa-diamond, .fa-club, .fa-spade {
     display: inline-block;
     font-size: inherit;
@@ -1399,7 +1396,6 @@ img.card-img {
     }
 }
 
-/* Improved focus styles for accessibility */
 button:focus, input:focus {
     outline: 2px solid var(--accent-gold);
     outline-offset: 2px;
