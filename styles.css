@@ -1,3 +1,5 @@
+/* Enhanced Styles for Poker Probability Calculator */
+
 :root {
     /* Color Variables */
     --table-green: #1e4d36;
@@ -31,11 +33,11 @@
     --table-border-width: 2.5vh;
     
     /* Card dimensions - based on table size */
-    --card-width: calc(var(--table-height) * 0.13);
+    --card-width: calc(var(--table-height) * 0.10);
     --card-height: calc(var(--card-width) * 1.4);
-    --card-small-width: calc(var(--table-height) * 0.08);
+    --card-small-width: calc(var(--table-height) * 0.06);
     --card-small-height: calc(var(--card-small-width) * 1.4);
-    --card-radius: 8px;
+    --card-radius: 6px;
 }
 
 /* Light Theme Variables */
@@ -235,11 +237,11 @@ header {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
-    padding: 8px; /* Reduced padding */
+    padding: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    width: calc(var(--card-small-width) * 2 + 20px); /* Adjusted width */
+    width: calc(var(--card-small-width) * 2 + 25px);
     z-index: 5;
     backdrop-filter: blur(3px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -421,7 +423,7 @@ header {
 
 .community-cards {
     display: flex;
-    gap: calc(var(--table-height) * 0.015); /* Reduced gap */
+    gap: calc(var(--table-height) * 0.02);
     flex-wrap: nowrap;
     justify-content: center;
 }
@@ -459,8 +461,7 @@ header {
 
 #playerCountValue {
     color: var(--accent-gold);
-    font-weight: 700;
-}
+    font-weight: 700; }
 
 .slider {
     -webkit-appearance: none;
@@ -750,7 +751,7 @@ header {
     position: relative;
     width: var(--card-width);
     height: var(--card-height);
-    background-color: transparent;
+    background-color: var(--card-white);
     border-radius: var(--card-radius);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -762,29 +763,25 @@ header {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-
-.card:hover {
-    transform: var(--card-hover-transform);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    z-index: 10;
+    /* Force size control */
+    max-width: var(--card-width);
+    max-height: var(--card-height);
 }
 
 .card.small {
     width: var(--card-small-width);
     height: var(--card-small-height);
+    max-width: var(--card-small-width);
+    max-height: var(--card-small-height);
     border-radius: calc(var(--card-radius) - 2px);
 }
 
-.card-img {
-    max-width: 100% !important;
-    max-height: 100% !important;
+img.card-img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
-    display: block;
+    max-width: 100% !important;
+    max-height: 100% !important;
 }
-
 
 .card.selected {
     border: 2px solid var(--accent-gold);
@@ -821,7 +818,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 24px; /* Reduced font size */
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s;
@@ -839,7 +836,7 @@ header {
 .card-placeholder.small {
     width: var(--card-small-width);
     height: var(--card-small-height);
-    font-size: 24px;
+    font-size: 18px; /* Reduced font size */
 }
 
 /* BUTTONS */
@@ -960,7 +957,7 @@ header {
 .save-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
     transform: translateY(-2px);
-    box-shadow: 0  6px 12px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
 }
 
 .close-btn, .cancel-btn {
