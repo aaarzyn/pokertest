@@ -193,6 +193,7 @@ header {
 .poker-table-rectangular {
     border-radius: 100px;
     background: linear-gradient(to bottom, #2c7353 0%, var(--table-green) 100%);
+    aspect-ratio: 1.8/1; /* This ensures the rectangular table maintains its shape */
 }
 
 .poker-table-rectangular::before,
@@ -277,7 +278,7 @@ header {
 }
 
 /* Position specific locations - calculated for both circular and rectangular tables */
-/* Circular table positions */
+/* Circular table positions - Adjusted to prevent overlap */
 .poker-table:not(.poker-table-rectangular) .position-1 {
     bottom: 1%;
     left: 50%;
@@ -296,7 +297,7 @@ header {
 
 .poker-table:not(.poker-table-rectangular) .position-4 {
     left: 10%;
-    top: 25%;
+    top: 15%; /* Adjusted from 25% to prevent overlap */
 }
 
 .poker-table:not(.poker-table-rectangular) .position-5 {
@@ -317,7 +318,7 @@ header {
 
 .poker-table:not(.poker-table-rectangular) .position-8 {
     right: 10%;
-    top: 25%;
+    top: 15%; /* Adjusted from 25% to prevent overlap */
 }
 
 .poker-table:not(.poker-table-rectangular) .position-9 {
@@ -335,7 +336,7 @@ header {
     right: 33%;
 }
 
-/* Rectangular table positions */
+/* Rectangular table positions - Adjusted for better spacing */
 .poker-table-rectangular .position-1 {
     bottom: 5%;
     left: 50%;
@@ -451,8 +452,7 @@ header {
 .player-count-container {
     display: flex;
     align-items: center;
-    gap: 15px;
-}
+    gap: 15px; }
 
 .player-count-container label {
     font-weight: 500;
