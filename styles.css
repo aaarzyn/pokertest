@@ -102,7 +102,7 @@ header {
 }
 
 .casino-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)),url('https://cdn.pixabay.com/photo/2015/11/19/16/27/casino-1051381_1280.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, .6)),url('https://cdn.pixabay.com/photo/2015/11/19/16/27/casino-1051381_1280.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
