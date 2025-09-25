@@ -282,7 +282,6 @@ header {
 .poker-table:not(.poker-table-rectangular) .position-1 {
     bottom: 5%;
     left: 33%;
-    transform: translateX(-50%);
 }
 
 .poker-table:not(.poker-table-rectangular) .position-2 {
