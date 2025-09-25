@@ -161,12 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
         preloadCardImages();
     state.players = initializePlayers(state.playerCount);
         // In your initialize function, after renderPlayerPositions() and before updateSelectedPlayerInfo()
-renderDealerCat();  // Add the static dealer cat
-positionDealerChip(); // Position the dealer chip
+
         renderPlayerPositions();
+       renderDealerCat();  // Add the static dealer cat
+positionDealerChip(); // Position the dealer chip
         renderCardDeck();
         renderCommunityCards();
-        renderDealerButton();
 
         const toggleDealerButton = document.createElement('button');
     toggleDealerButton.id = 'toggleDealerButton';
@@ -527,7 +527,6 @@ positionDealerChip(); // Position the dealer chip
     
     // card reset
     function resetCards() {
-     function resetCards() {
     state.players.forEach(player => player.clearCards());
     state.communityCards = [];
     
@@ -1107,7 +1106,7 @@ function positionDealerChip() {
     dealerChip.textContent = 'D';
     
     // Find the player position element
-    const playerPosition = document.querySelector(`.player-position${state.dealerPosition === 0 ? '.you' : ''}`);
+    const playerPosition = document.querySelector(`.position-${state.dealerPosition + 1}${state.dealerPosition === 0 ? '.you' : ''}`);
     
     if (playerPosition) {
         // Get player position
@@ -1144,11 +1143,6 @@ function positionDealerChip() {
         
         tableElement.appendChild(dealerChip);
     }
-}
-
-function moveDealerButton() {
-    state.dealerPosition = (state.dealerPosition % 12) + 1;
-    renderDealerButton();
 }
 
 function toggleDealer() {
