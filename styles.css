@@ -1,8 +1,9 @@
 /* Enhanced Styles for Poker Probability Calculator */
 
 :root {
-    --table-green: #35654d;
-    --table-border: #2a3f33;
+    /* Color Variables */
+    --table-green: #1e4d36;
+    --table-border: #0d2318;
     --wood-brown: #8b5a2b;
     --dark-wood: #6b4423;
     --accent-gold: #d4af37;
@@ -26,12 +27,17 @@
     --button-hover-brightness: 1.2;
     --header-height: 70px;
     
-    /* Card dimensions - based on your 219x304 cards */
-    --card-width: 110px;  /* Scaled down for UI */
-    --card-height: 152px; /* Maintaining aspect ratio */
-    --card-small-width: 80px;
-    --card-small-height: 111px;
+    /* Card dimensions - based on viewport percentage */
+    --card-width: 9vw;
+    --card-height: 12.5vw;
+    --card-small-width: 6vw;
+    --card-small-height: 8.3vw;
     --card-radius: 8px;
+    
+    /* Table dimensions */
+    --table-height: 60vh;
+    --table-max-width: 90%;
+    --table-border-width: 2.5vh;
 }
 
 /* Light Theme Variables */
@@ -102,7 +108,7 @@ header {
 }
 
 .casino-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, .7)), url('https://cdn.pixabay.com/photo/2015/11/19/16/27/casino-1051381_1280.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, .6)), url('https://cdn.pixabay.com/photo/2015/11/19/16/27/casino-1051381_1280.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -121,7 +127,7 @@ header {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.8));
+    background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.7));
     pointer-events: none;
 }
 
@@ -133,38 +139,87 @@ header {
 
 /* POKER TABLE STYLES */
 .poker-table {
-    background-color: var(--table-green);
-    border-radius: 200px;
-    height: 600px;
+    background: radial-gradient(circle, #2c7353 0%, var(--table-green) 80%);
+    border-radius: 50%;
+    height: var(--table-height);
     position: relative;
-    border: 20px solid var(--wood-brown);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .7), inset 0 0 80px rgba(0, 0, 0, .3);
+    border: var(--table-border-width) solid var(--wood-brown);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, .7), 
+        inset 0 0 80px rgba(0, 0, 0, .4),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
     margin: 0 auto;
-    max-width: 1100px;
+    max-width: var(--table-max-width);
     overflow: hidden;
     transition: all 0.5s ease;
 }
 
+/* Enhanced table styles with felt texture and glow */
 .poker-table::before {
     content: '';
     position: absolute;
-    top: -10px; 
-    left: -10px;
-    right: -10px; 
-    bottom: -10px;
-    border-radius: 200px;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, .1), transparent);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg, 
+            transparent, 
+            transparent 10px, 
+            rgba(255, 255, 255, 0.02) 10px, 
+            rgba(255, 255, 255, 0.02) 20px
+        );
+    border-radius: inherit;
     z-index: 1;
+    pointer-events: none;
+}
+
+/* Table rim highlight */
+.poker-table::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, transparent 20%, rgba(255, 255, 255, 0.1) 40%, transparent 80%);
+    z-index: 0;
     pointer-events: none;
 }
 
 /* Table shapes */
 .poker-table-rectangular {
     border-radius: 100px;
+    background: linear-gradient(to bottom, #2c7353 0%, var(--table-green) 100%);
 }
 
-.poker-table-rectangular::before {
+.poker-table-rectangular::before,
+.poker-table-rectangular::after {
     border-radius: 100px;
+}
+
+/* Improved wood texture for table border */
+.poker-table::before {
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Wood grain on table border */
+.poker-table {
+    position: relative;
+}
+
+.poker-table::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--table-border-width));
+    left: calc(-1 * var(--table-border-width));
+    right: calc(-1 * var(--table-border-width));
+    bottom: calc(-1 * var(--table-border-width));
+    background: linear-gradient(45deg, var(--dark-wood), var(--wood-brown), var(--dark-wood));
+    border-radius: inherit;
+    z-index: -1;
 }
 
 /* PLAYER POSITIONS */
@@ -172,6 +227,7 @@ header {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 5;
 }
 
 .player-position {
@@ -179,28 +235,32 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    width: 180px; /* Increased width for your card size */
+    width: calc(var(--card-small-width) * 2 + 25px);
     z-index: 5;
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .player-position:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .player-position.you {
     background-color: rgba(212, 175, 55, 0.2);
     border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 .player-position.folded {
     opacity: 0.5;
+    filter: grayscale(70%);
 }
 
 .player-label {
@@ -216,62 +276,123 @@ header {
     max-width: 100%;
 }
 
-/* Position specific locations - adjusted to prevent overlap */
-.position-1 {
+/* Position specific locations - calculated for both circular and rectangular tables */
+/* Circular table positions */
+.poker-table:not(.poker-table-rectangular) .position-1 {
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.poker-table:not(.poker-table-rectangular) .position-2 {
+    bottom: 15%;
+    left: 15%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-3 {
+    bottom: 40%;
+    left: 2%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-4 {
+    left: 10%;
+    top: 25%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-5 {
+    left: 25%;
+    top: 5%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-6 {
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.poker-table:not(.poker-table-rectangular) .position-7 {
+    right: 25%;
+    top: 5%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-8 {
+    right: 10%;
+    top: 25%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-9 {
+    bottom: 40%;
+    right: 2%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-10 {
+    bottom: 15%;
+    right: 15%;
+}
+
+.poker-table:not(.poker-table-rectangular) .position-11 {
+    bottom: 5%;
+    right: 33%;
+}
+
+/* Rectangular table positions */
+.poker-table-rectangular .position-1 {
     bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.position-2 {
-    bottom: 25%;
-    left: 15%;
+.poker-table-rectangular .position-2 {
+    bottom: 5%;
+    left: 25%;
 }
 
-.position-3 {
-    bottom: 45%;
+.poker-table-rectangular .position-3 {
+    bottom: 5%;
     left: 5%;
 }
 
-.position-4 {
-    left: 10%;
-    top: 30%;
+.poker-table-rectangular .position-4 {
+    left: 1%;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.position-5 {
-    left: 20%;
-    top: 10%;
+.poker-table-rectangular .position-5 {
+    left: 5%;
+    top: 5%;
 }
 
-.position-6 {
+.poker-table-rectangular .position-6 {
+    top: 5%;
+    left: 25%;
+}
+
+.poker-table-rectangular .position-7 {
     top: 5%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.position-7 {
-    right: 20%;
-    top: 10%;
+.poker-table-rectangular .position-8 {
+    top: 5%;
+    right: 25%;
 }
 
-.position-8 {
-    right: 10%;
-    top: 30%;
-}
-
-.position-9 {
-    bottom: 45%;
+.poker-table-rectangular .position-9 {
+    top: 5%;
     right: 5%;
 }
 
-.position-10 {
-    bottom: 25%;
-    right: 15%;
+.poker-table-rectangular .position-10 {
+    right: 1%;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.position-11 {
-    bottom: 15%;
-    right: 30%;
+.poker-table-rectangular .position-11 {
+    bottom: 5%;
+    right: 5%;
 }
 
 /* COMMUNITY AREA */
@@ -284,6 +405,12 @@ header {
     flex-direction: column;
     align-items: center;
     z-index: 10;
+    width: 65%;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .community-label {
@@ -296,8 +423,8 @@ header {
 
 .community-cards {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 1.5vw;
+    flex-wrap: nowrap;
     justify-content: center;
 }
 
@@ -314,10 +441,11 @@ header {
     justify-content: space-between;
     align-items: center;
     margin: 20px 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 15px 20px;
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
 }
 
 .player-count-container {
@@ -340,7 +468,7 @@ header {
     -webkit-appearance: none;
     width: 150px;
     height: 8px;
-    border-radius: 5px;
+    border-radius: 5 px;
     background: #444;
     outline: none;
     opacity: 0.7;
@@ -378,11 +506,13 @@ header {
 
 /* RESULTS SECTION */
 .results-section {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: var(--border-radius);
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .results-header {
@@ -402,6 +532,7 @@ header {
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .result-details p {
@@ -413,15 +544,27 @@ header {
     font-weight: bold;
     text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
     letter-spacing: 1px;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+    }
+    to {
+        text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+    }
 }
 
 /* CARD SELECTION AREA */
 .card-selection-area {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: var(--border-radius);
     padding: 20px;
     margin-top: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .selection-header {
@@ -511,7 +654,8 @@ header {
 }
 
 .toggle-switch input:checked + .slider:before {
-    transform: translateX(24px); }
+    transform: translateX(24px);
+}
 
 /* Card Tabs */
 .card-tabs {
@@ -522,7 +666,7 @@ header {
 .tab-btn {
     padding: 8px 12px;
     border: none;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.5);
     color: var(--text-light);
     border-radius: 5px;
     cursor: pointer;
@@ -531,42 +675,51 @@ header {
     align-items: center;
     gap: 5px;
     transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tab-btn:hover {
-    background-color: #444;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .tab-btn.active {
-    background-color: #555;
+    background-color: rgba(255, 255, 255, 0.15);
     font-weight: 500;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+.tab-btn.hearts i,
 .tab-btn.hearts {
     color: var(--red-suit);
 }
 
+.tab-btn.diamonds i,
 .tab-btn.diamonds {
     color: var(--red-suit);
 }
 
+.tab-btn.clubs i,
 .tab-btn.clubs {
     color: var(--text-light);
 }
 
+.tab-btn.spades i,
 .tab-btn.spades {
     color: var(--text-light);
 }
 
 /* Card Deck */
 .card-deck-container {
-    max-height: 350px; /* Increased height for larger cards */
+    max-height: 350px;
     overflow-y: auto;
-    padding: 10px;
+    padding: 15px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: var(--border-radius);
     scrollbar-width: thin;
     scrollbar-color: #555 #333;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-deck-container::-webkit-scrollbar {
@@ -574,13 +727,17 @@ header {
 }
 
 .card-deck-container::-webkit-scrollbar-track {
-    background: #333;
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
 }
 
 .card-deck-container::-webkit-scrollbar-thumb {
-    background-color: #555;
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
+}
+
+.card-deck-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .card-deck {
@@ -595,20 +752,23 @@ header {
     position: relative;
     width: var(--card-width);
     height: var(--card-height);
-    background-color: var(--card-white);
+    background-color: transparent;
     border-radius: var(--card-radius);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .card:hover {
     transform: var(--card-hover-transform);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     z-index: 10;
 }
 
@@ -619,17 +779,30 @@ header {
 }
 
 .card-img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
 
 .card.selected {
     border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 10px var(--accent-gold);
 }
 
 .card-back {
-    background-color: var(--card-back);
+    background-color: transparent;
+}
+
+.card-back .card-img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }
 
 .fallback-card-back {
@@ -645,7 +818,7 @@ header {
 .card-placeholder {
     width: var(--card-width);
     height: var(--card-height);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
     border-radius: var(--card-radius);
     display: flex;
     justify-content: center;
@@ -654,10 +827,15 @@ header {
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
 .card-placeholder:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .card-placeholder.small {
@@ -680,6 +858,28 @@ header {
     justify-content: center;
     gap: 8px;
     transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn i {
@@ -694,28 +894,37 @@ header {
 .info-btn {
     background-color: #2196F3;
     color: white;
+    box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
 }
 
 .info-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(33, 150, 243, 0.4);
 }
 
 .theme-btn {
     background-color: #673AB7;
     color: white;
+    box-shadow: 0 4px 6px rgba(103, 58, 183, 0.3);
 }
 
 .theme-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(103, 58, 183, 0.4);
 }
 
 .layout-btn {
     background-color: #FF9800;
     color: white;
+    box-shadow: 0 4px 6px rgba(255, 152, 0, 0.3);
 }
 
 .layout-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 152, 0, 0.4);
 }
 
 .calculate-btn {
@@ -723,38 +932,48 @@ header {
     color: white;
     padding: 12px 24px;
     font-weight: 600;
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
 }
 
 .calculate-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
 }
 
 .reset-btn {
     background-color: var(--danger-red);
     color: white;
+    box-shadow: 0 4px 6px rgba(244, 67, 54, 0.3);
 }
 
 .reset-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(244, 67, 54, 0.4);
 }
 
 .save-btn {
     background-color: var(--success-green);
     color: white;
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
 }
 
 .save-btn:hover:not(:disabled) {
     filter: brightness(var(--button-hover-brightness));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
 }
 
 .close-btn, .cancel-btn {
     background-color: #555;
-    color: white;
+    color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .close-btn:hover, .cancel-btn:hover {
     background-color: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* MODALS */
@@ -769,19 +988,21 @@ header {
     overflow: auto;
     background-color: var(--modal-bg);
     transition: opacity 0.3s;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
     background-color: var(--secondary-bg);
     margin: 5% auto;
     padding: 0;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
     width: 90%;
     max-width: 600px;
     animation: modalFadeIn 0.3s;
     max-height: 90vh;
     overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .help-content {
@@ -805,6 +1026,7 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .modal-header h2 {
@@ -820,11 +1042,12 @@ header {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s;
 }
 
 .close-modal:hover,
 .close-modal:focus {
-    color: var(--text-light);
+    color: var(--accent-gold);
     text-decoration: none;
 }
 
@@ -839,6 +1062,7 @@ header {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* FORM ELEMENTS IN MODAL */
@@ -859,15 +1083,17 @@ header {
     font-size: 16px;
     border-radius: var(--border-radius);
     border: 1px solid #555;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.2);
     color: var(--text-light);
     font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--accent-gold);
     box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .status-options {
@@ -899,17 +1125,20 @@ header {
     left: 0;
     height: 20px;
     width: 20px;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .radio-container:hover input ~ .checkmark {
-    background-color: #444;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .radio-container input:checked ~ .checkmark {
     background-color: var(--accent-gold);
+    border-color: var(--accent-gold);
 }
 
 .checkmark:after {
@@ -945,9 +1174,10 @@ header {
     gap: 10px;
     max-height: 350px;
     overflow-y: auto;
-    padding: 10px;
+    padding: 15px;
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* HELP SECTION STYLES */
@@ -970,16 +1200,25 @@ header {
 .hand-rankings {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 10px;
+    gap: 15px;
     margin-top: 15px;
 }
 
 .hand-rank {
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    border-radius: 5px;
+    padding: 12px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s;
+}
+
+.hand-rank:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .rank-name {
@@ -1030,31 +1269,20 @@ header {
 /* RESPONSIVE DESIGN */
 @media (max-width: 1200px) {
     :root {
-        --card-width: 90px;
-        --card-height: 125px;
-        --card-small-width: 70px;
-        --card-small-height: 97px;
-    }
-    
-    .poker-table {
-        height: 500px;
-    }
-    
-    .player-position {
-        width: 150px;
+        --card-width: 11vw;
+        --card-height: 15.2vw;
+        --card-small-width: 7.5vw;
+        --card-small-height: 10.4vw;
     }
 }
 
 @media (max-width: 992px) {
     :root {
-        --card-width: 80px;
-        --card-height: 111px;
-        --card-small-width: 60px;
-        --card-small-height: 83px;
-    }
-    
-    .poker-table {
-        height: 450px;
+        --card-width: 14vw;
+        --card-height: 19.4vw;
+        --card-small-width: 9vw;
+        --card-small-height: 12.5vw;
+        --table-height: 55vh;
     }
     
     .selection-header {
@@ -1076,22 +1304,15 @@ header {
     .player-count-container, .action-buttons {
         width: 100%;
     }
-    
-    .player-position {
-        width: 130px;
-    }
 }
 
 @media (max-width: 768px) {
     :root {
-        --card-width: 70px;
-        --card-height: 97px;
-        --card-small-width: 50px;
-        --card-small-height: 69px;
-    }
-    
-    .poker-table {
-        height: 400px;
+        --card-width: 18vw;
+        --card-height: 25vw;
+        --card-small-width: 11vw;
+        --card-small-height: 15.2vw;
+        --table-height: 50vh;
     }
     
     header {
@@ -1104,41 +1325,34 @@ header {
         margin: 0 auto;
     }
     
-    .card-deck {
-        grid-template-columns: repeat(auto-fill, minmax(var(--car -width), 1fr));
-    }
-    
-    .player-position {
-        width: 120px;
-        padding: 7px;
+    .community-cards {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2vw;
     }
 }
 
 @media (max-width: 576px) {
     :root {
-        --card-width: 60px;
-        --card-height: 83px;
-        --card-small-width: 45px;
-        --card-small-height: 62px;
+        --card-width: 22vw;
+        --card-height: 30.5vw;
+        --card-small-width: 14vw;
+        --card-small-height: 19.4vw;
+        --table-height: 45vh;
+        --table-border-width: 1.5vh;
     }
     
-    .poker-table {
-        height: 350px;
-        border-width: 10px;
-    }
-    
-    .player-position {
-        width: 100px;
-        padding: 5px;
+    .btn {
+        padding: 8px 12px;
+        font-size: 14px;
     }
     
     .player-label {
         font-size: 12px;
     }
     
-    .btn {
-        padding: 8px 12px;
-        font-size: 14px;
+    .community-area {
+        width: 90%;
     }
 }
 
@@ -1170,4 +1384,51 @@ header {
 
 .fade-in {
     animation: fadeIn 0.5s;
+}
+
+/* Dealer chip animation */
+.dealer-chip {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, white 0%, var(--accent-gold) 50%, white 100%);
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    animation: chipSpin 4s linear infinite;
+}
+
+@keyframes chipSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Improved focus styles for accessibility */
+button:focus, input:focus {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+
+/* Theme transition */
+body.light-theme .poker-table {
+    background: radial-gradient(circle, #3a9b71 0%, var(--table-green) 80%);
+}
+
+body.light-theme .card.selected {
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+}
+
+/* Card hover effects */
+.card:hover {
+    transform: var(--card-hover-transform) rotate(2deg);
 }
