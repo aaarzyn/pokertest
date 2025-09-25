@@ -173,6 +173,7 @@ header {
     border-radius: inherit;
     z-index: 1;
     pointer-events: none;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, .5);
 }
 
 /* Table rim highlight */
@@ -199,16 +200,6 @@ header {
 .poker-table-rectangular::before,
 .poker-table-rectangular::after {
     border-radius: 100px;
-}
-
-/* Improved wood texture for table border */
-.poker-table::before {
-    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
-}
-
-/* Wood grain on table border */
-.poker-table {
-    position: relative;
 }
 
 .poker-table::before {
