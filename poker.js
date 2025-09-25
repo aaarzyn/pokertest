@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
    function initialize() {
         preloadCardImages();
     state.players = initializePlayers(state.playerCount);
+        // In your initialize function, after renderPlayerPositions() and before updateSelectedPlayerInfo()
+renderDealerCat();  // Add the static dealer cat
+positionDealerChip(); // Position the dealer chip
         renderPlayerPositions();
         renderCardDeck();
         renderCommunityCards();
@@ -524,22 +527,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // card reset
     function resetCards() {
-     state.players.forEach(player => player.clearCards());
-        state.communityCards = [];
-     
-        renderPlayerPositions();
-        renderCommunityCards();
-        renderCardDeck();
-        
-        results.innerHTML = `
-            <div class="results-header">
-                <i class="fas fa-chart-line"></i> Hand Analysis
-            </div>
-            <p>Select your cards and the community cards to calculate your odds.</p>
-        `;
-      
-     updateCalculateButton();
+     function resetCards() {
+    state.players.forEach(player => player.clearCards());
+    state.communityCards = [];
+    
+    // Only reset the dealer position, not remove the cat
+    const dealerChip = document.querySelector('.dealer-chip');
+    if (dealerChip) {
+        dealerChip.remove();
     }
+    state.dealerPosition = 0; // Reset to "you"
+    positionDealerChip();
+    
+    renderPlayerPositions();
+    renderCommunityCards();
+    renderCardDeck();
+    
+    results.innerHTML = `
+        <div class="results-header">
+            <i class="fas fa-chart-line"></i> Hand Analysis
+        </div>
+        <p>Select your cards and the community cards to calculate your odds.</p>
+    `;
+    
+    updateCalculateButton();
+}
     
     // player count update
     function updatePlayerCount(count) {
@@ -698,8 +710,9 @@ else {
         ? '<i class="fas fa-table"></i> Layout'
         : '<i class="fas fa-circle"></i> Layout';
     
-    // Update dealer button position
-    renderDealerButton();
+    // Re-render dealer elements
+    renderDealerCat();
+    positionDealerChip();
 }
    
 
@@ -1056,78 +1069,80 @@ function combination(n, k) {
 
 });
 
-function renderDealerButton() {
-    // Remove existing dealer button if any
-    const existingButton = document.querySelector('.dealer-button');
-    if (existingButton) {
-        existingButton.remove();
+
+
+function renderDealerCat() {
+    // Remove existing dealer cat if any
+    const existingCat = document.querySelector('.dealer-cat-position');
+    if (existingCat) {
+        existingCat.remove();
     }
     
     const tableElement = document.querySelector('.poker-table');
-    const dealerButton = document.createElement('div');
-    dealerButton.className = 'dealer-button';
+    const dealerCat = document.createElement('div');
+    dealerCat.className = 'dealer-cat-position';
     
     // Create an image element for the partying cat GIF
     const catImg = document.createElement('img');
     catImg.src = 'https://media.giphy.com/media/BzyTuYCmvSORqs1ABM/giphy.gif'; // Party cat GIF
-    catImg.alt = 'Dealer';
+    catImg.alt = 'Dealer Cat';
     
-    // Add a label
-    const dealerLabel = document.createElement('div');
-    dealerLabel.className = 'dealer-label';
-    dealerLabel.textContent = 'DEALER';
-    
-    // Add elements
-    dealerButton.appendChild(catImg);
-    dealerButton.appendChild(dealerLabel);
-    
-    // Position the dealer button relative to the selected position
-    positionDealerButton(dealerButton);
-    
-    // Add click functionality to move the dealer
-    dealerButton.addEventListener('click', moveDealerButton);
-    
-    tableElement.appendChild(dealerButton);
+    dealerCat.appendChild(catImg);
+    tableElement.appendChild(dealerCat);
 }
 
-function positionDealerButton(buttonElement) {
-    const isRectangular = state.layoutType === 'rectangle';
-    let posX, posY;
-    
-    // Calculate position based on table type and dealer position
-    if (isRectangular) {
-        // Positions for rectangular table
-        switch(state.dealerPosition % 12) {
-            case 1: posX = '50%'; posY = '85%'; break; // Bottom middle
-            case 2: posX = '25%'; posY = '85%'; break; // Bottom left
-            case 3: posX = '5%'; posY = '85%'; break; // Bottom far left
-            case 4: posX = '1%'; posY = '50%'; break; // Left middle
-            case 5: posX = '5%'; posY = '15%'; break; // Top left
-            case 6: posX = '25%'; posY = '15%'; break; // Top middle-left
-            case 7: posX = '50%'; posY = '15%'; break; // Top middle
-            case 8: posX = '75%'; posY = '15%'; break; // Top middle-right
-            case 9: posX = '95%'; posY = '15%'; break; // Top right
-            case 10: posX = '99%'; posY = '50%'; break; // Right middle
-            case 11: posX = '95%'; posY = '85%'; break; // Bottom right
-            case 0: posX = '75%'; posY = '85%'; break; // Bottom middle-right
-        }
-    } else {
-        // Positions for circular table - using trigonometry
-        const radius = 42; // % from center
-        const angle = (state.dealerPosition % 12) * (360 / 12) * (Math.PI / 180);
-        const centerX = 50;
-        const centerY = 50;
-        
-        posX = centerX + radius * Math.sin(angle) + '%';
-        posY = centerY - radius * Math.cos(angle) + '%';
+function positionDealerChip() {
+    // Remove existing dealer chip if any
+    const existingChip = document.querySelector('.dealer-chip');
+    if (existingChip) {
+        existingChip.remove();
     }
     
-    buttonElement.style.left = posX;
-    buttonElement.style.top = posY;
+    // If no dealer position is set, don't render the chip
+    if (state.dealerPosition === null) return;
     
-    // If it's using percentages, handle transform for centering
-    if (typeof posX === 'string' && posX.includes('%')) {
-        buttonElement.style.transform = 'translate(-50%, -50%)';
+    const tableElement = document.querySelector('.poker-table');
+    const dealerChip = document.createElement('div');
+    dealerChip.className = 'dealer-chip';
+    dealerChip.textContent = 'D';
+    
+    // Find the player position element
+    const playerPosition = document.querySelector(`.player-position${state.dealerPosition === 0 ? '.you' : ''}`);
+    
+    if (playerPosition) {
+        // Get player position
+        const playerRect = playerPosition.getBoundingClientRect();
+        const tableRect = tableElement.getBoundingClientRect();
+        
+        // Calculate position relative to the table
+        const playerCenterX = playerRect.left + playerRect.width / 2 - tableRect.left;
+        const playerCenterY = playerRect.top + playerRect.height / 2 - tableRect.top;
+        
+        // Calculate the table center
+        const tableCenterX = tableRect.width / 2;
+        const tableCenterY = tableRect.height / 2;
+        
+        // Calculate the direction vector from player to center
+        let dirX = tableCenterX - playerCenterX;
+        let dirY = tableCenterY - playerCenterY;
+        
+        // Normalize the direction vector
+        const length = Math.sqrt(dirX * dirX + dirY * dirY);
+        dirX = dirX / length;
+        dirY = dirY / length;
+        
+        // Place the chip 20px away from the player in the direction of the center
+        const chipX = playerCenterX + dirX * 30;
+        const chipY = playerCenterY + dirY * 30;
+        
+        // Set the position
+        dealerChip.style.left = `${chipX}px`;
+        dealerChip.style.top = `${chipY}px`;
+        
+        // Add click event to move the dealer chip to the next player
+        dealerChip.addEventListener('click', moveDealer);
+        
+        tableElement.appendChild(dealerChip);
     }
 }
 
@@ -1137,11 +1152,32 @@ function moveDealerButton() {
 }
 
 function toggleDealer() {
-    const dealerButton = document.querySelector('.dealer-button');
-    if (dealerButton) {
-        dealerButton.remove();
+    const dealerChip = document.querySelector('.dealer-chip');
+    
+    if (dealerChip) {
+        // Hide dealer chip
+        dealerChip.remove();
+        state.dealerPosition = null;
     } else {
-        renderDealerButton();
+        // Show dealer chip at first player position
+        state.dealerPosition = 0; // Start with "you"
+        positionDealerChip();
     }
 }
 
+function moveDealer() {
+    // Get all active players
+    const activePlayers = state.players.filter(p => p.active && p.id < state.playerCount);
+    
+    if (activePlayers.length < 2) return;
+    
+    // Find the current dealer index
+    const currentDealerIndex = activePlayers.findIndex(p => p.id === state.dealerPosition);
+    
+    // Move to next dealer (wrap around if needed)
+    const nextDealerIndex = (currentDealerIndex + 1) % activePlayers.length;
+    state.dealerPosition = activePlayers[nextDealerIndex].id;
+    
+    // Update the dealer chip position
+    positionDealerChip();
+}
