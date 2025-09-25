@@ -685,7 +685,7 @@ else {
     // layout toggle
     function toggleLayout() {
         state.layoutType = state.layoutType === 'circle' ? 'rectangle' : 'circle';
-        document.querySelector('.poker-table').classList.toggle('rectangular');
+        document.querySelector('.poker-table').classList.toggle('poker-table-rectangular');
         layoutButton.innerHTML = state.layoutType === 'circle' 
          ? '<i class="fas fa-table"></i> Layout'
             : '<i class="fas fa-circle"></i> Layout';
